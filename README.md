@@ -1,3 +1,27 @@
+Background & Insights:
+
+•	Though ride-hailing industry is rapidly growing these year, New York City is actually limiting those apps such as Uber and Lyft by putting a freeze in licensing new cars in the city. This plan was made to prevent urban congestion. However, those apps are still very convenient options for people who need short-distance driving services. Under this circumstances, we want to compare the taxi and Uber pickup number. By doing this, we can see which one is more popular at NYC and also the pattern (shrinkage or growth) of number change for both options during 2015 and 2016. 
+
+•	Getting a parking violation ticket might be the last thing you want to see after you drive your friend to the airport. Maybe you should call a taxi. It’s easier for you, but will it be costly? Just to make life easier, we want to compare the taxi price and the potential parking violation fee by time specifically at New York Airports (i.e. JFK, EWR and LGA). This could help people to make a decision when they need to go to the airport. 
+
+Dataset (OPEN NYC):
+
+•	Yellow taxi data
+•	Uber pickup data
+•	Parking violation data
+
+Plan:
+
+•	Obtain the dataset we need and update the dataset by adding data of 2016
+•	Select features we interest that can clearly show the comparison under different conditions (e.g. business day or not)
+•	Process the data and explore it more by visualizing it
+•	Update the code to add panels we need
+
+
+
+
+
+
 # Project 2: Shiny App Development Version 2.0
 
 ### [Project Description](doc/project2_desc.md)
