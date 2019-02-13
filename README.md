@@ -7,14 +7,19 @@ Background & Insights:
 Dataset (OPEN NYC):
 
 •	Yellow taxi data
+
 •	Uber pickup data
+
 •	Parking violation data
 
 Plan:
 
 •	Obtain the dataset we need and update the dataset by adding data of 2016
+
 •	Select features we interest that can clearly show the comparison under different conditions (e.g. business day or not)
+
 •	Process the data and explore it more by visualizing it
+
 •	Update the code to add panels we need
 
 
