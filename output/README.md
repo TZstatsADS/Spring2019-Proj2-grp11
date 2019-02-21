@@ -4,3 +4,6 @@
 
 The output directory contains analysis output, processed datasets, logs, or other processed things.
 
+Parking Violation2015_clean : count | location | longitude | latitude
+Parking Violation2016_clean : count | location | longitude | latitude
+taxi2016_clean : 

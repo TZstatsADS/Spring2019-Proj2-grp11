@@ -1,6 +1,5 @@
 library(shiny)
 library(leaflet)
-
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
   

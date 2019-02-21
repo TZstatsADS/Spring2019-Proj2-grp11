@@ -1,11 +1,11 @@
+setwd("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11")
 library(shiny)
 library(choroplethr)
-library(choroplethrZip)
 library(dplyr)
 library(leaflet)
 library(maps)
 library(rgdal)
-
+library("choroplethrZip")
 ## Define Manhattan's neighborhood
 man.nbhd=c("all neighborhoods", "Central Harlem", 
            "Chelsea and Clinton",
@@ -17,7 +17,8 @@ man.nbhd=c("all neighborhoods", "Central Harlem",
            "Upper East Side", 
            "Upper West Side",
            "Inwood and Washington Heights")
-zip.nbhd=as.list(1:length(man.nbhd))
+zip.nbhd=as.list(1:length(man.nbhd))  # empty list
+# zip code
 zip.nbhd[[1]]=as.character(c(10026, 10027, 10030, 10037, 10039))
 zip.nbhd[[2]]=as.character(c(10001, 10011, 10018, 10019, 10020))
 zip.nbhd[[3]]=as.character(c(10036, 10029, 10035))
@@ -30,8 +31,8 @@ zip.nbhd[[9]]=as.character(c(10023, 10024, 10025))
 zip.nbhd[[10]]=as.character(c(10031, 10032, 10033, 10034, 10040))
 
 ## Load housing data
-load("../output/count.RData")
-load("../output/mh2009use.RData")
+load("output/count.RData")
+load("output/mh2009use.RData")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -131,13 +132,13 @@ shinyServer(function(input, output) {
     }
     
     # From https://data.cityofnewyork.us/Business/Zip-Code-Boundaries/i8iw-xf4u/data
-    NYCzipcodes <- readOGR("../data/ZIP_CODE_040114.shp",
-                           #layer = "ZIP_CODE", 
+    NYCzipcodes <- readOGR("../data/ZIP_CODE_040114.shp",  # from package rgdal, vectorize the zip code to polygon
+                           #layer = "ZIP_CODE",     
                            verbose = FALSE)
     
     selZip <- subset(NYCzipcodes, NYCzipcodes$ZIPCODE %in% count.df.sel$region)
     
-    # ----- Transform to EPSG 4326 - WGS84 (required)
+    # ----- Transform to EPSG 4326 - WGS84 (required) which is similar to GPS, a kind of reference system
     subdat<-spTransform(selZip, CRS("+init=epsg:4326"))
     
     # ----- save the data slot
@@ -148,7 +149,7 @@ shinyServer(function(input, output) {
     rownames(subdat_data)=subdat.rownames
     
     # ----- to write to geojson we need a SpatialPolygonsDataFrame
-    subdat<-SpatialPolygonsDataFrame(subdat, data=subdat_data)
+    subdat<-SpatialPolygonsDataFrame(subdat, data=subdat_data)   # get the polygons according to your data set
     
     # ----- set uo color pallette https://rstudio.github.io/leaflet/colors.html
     # Create a continuous palette function
