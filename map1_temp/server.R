@@ -14,13 +14,14 @@ library(rgdal)
 library(readr)
 
 
-setwd("../")
-load('output/shape.RData')
+setwd("/Users/yeyejiang/Documents/GitHub/Spring2019-Proj2-grp11/output")
+load('nyc_nbhd.RData')
+load('taxidata.RData')
 
 shinyServer(function(input, output) {
   
   output$map2 <- renderLeaflet({
-    leaflet(nyc_neighborhoods) %>%
+    leaflet(nyc_nbhd) %>%
       addTiles() %>% 
       addPolygons(popup = ~neighborhood,weight = 0.5,color = 'grey') %>%
       addProviderTiles("CartoDB.Positron")

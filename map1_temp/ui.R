@@ -1,5 +1,6 @@
 library(ggplot2)
 library(leaflet)
+library(shiny)
 a <- navbarPage("My Application",
                 tabPanel("Component 1",
                          

@@ -6,10 +6,10 @@ output: html_notebook
 ```{r}
 library(sp)
 library(dplyr)
-library(sp)
+#setwd("../")
 load('/Users/yeyejiang/Documents/GitHub/Spring2019-Proj2-grp11/output/nyc_nbhd.RData')
-taxi1=read.csv('/Users/yeyejiang/Desktop/taxi2016_1.csv')
-taxi2=read.csv('/Users/yeyejiang/Desktop/taxi2016_2.csv')
+taxi1<-read.csv('/Users/yeyejiang/Desktop/taxi2016_1.csv')
+taxi2<-read.csv('/Users/yeyejiang/Desktop/taxi2016_2.csv')
 #nyc_neighborhoods
 ```
 
@@ -33,17 +33,17 @@ nbhd<-function(ll){
 
 #taxi1
 pickupnbhd1<-taxi1%>%select(PU.lon,PU.lat)%>%nbhd()
-colnames(pickupnbhd1)%>%c('PUnbhd','PUnbhdBorough')
+colnames(pickupnbhd1)<-c('PUnbhd','PUnbhdBorough')
 
 dropoffnbhd1<-taxi1%>%select(DO.lon,DO.lat)%>%nbhd()
-colnames(dropoffnbhd1)%>%c('DOnbhd','DOnbhdBorough')
+colnames(dropoffnbhd1)<-c('DOnbhd','DOnbhdBorough')
 
 #taxi2
 pickupnbhd2<-taxi2%>%select(PU.lon,PU.lat)%>%nbhd()
-colnames(pickupnbhd2)%>%c('PUnbhd','PUnbhdBorough')
+colnames(pickupnbhd2)<-c('PUnbhd','PUnbhdBorough')
 
 dropoffnbhd2<-taxi2%>%select(DO.lon,DO.lat)%>%nbhd()
-colnames(dropoffnbhd2)%>%c('DOnbhd','DOnbhdBorough')
+colnames(dropoffnbhd2)<-c('DOnbhd','DOnbhdBorough')
 ```
 
 ```{r}
