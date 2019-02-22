@@ -1,5 +1,5 @@
 library(shiny)
-
+library(leaflet)
 
   
 navbarPage("NYC TRAFFIC", id="nav", 
@@ -15,7 +15,7 @@ navbarPage("NYC TRAFFIC", id="nav",
                                
                                   h2("Taxi and Uber hourly flow change"),
                                       
-                                  selectInput("car","car type",c("Taxi","Uber","Both"),selected = "Taxi"),
+                                  selectInput("car","car type",c("Taxi","Uber","Both"),selected = "Uber"),
                                       
                                   textInput("date", "Choose date", "1/1/2015"),
                                       
