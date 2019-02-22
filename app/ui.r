@@ -28,7 +28,7 @@ navbarPage("NYC TAXI", id="nav",
                                       width = 160, height = 180,
                                       
                                       radioButtons("CF", label = "Layers",
-                                                   choices = list("Count Number" = "count", "Fare Per Distance" = "FPD","Cluster" = "cluster1" ,"Cash Paying Percentage" = "cash"), 
+                                                   choices = list("Count Number" = "count", "Fare Per Distance" = "FPD", "Cash Paying Percentage" = "cash"), 
                                                    selected = "count")
                                       
                                       
@@ -63,9 +63,9 @@ navbarPage("NYC TAXI", id="nav",
                                       
                                       
                                       
-                                      checkboxInput("top15count", "Top 5 Count", FALSE),
-                                      checkboxInput("top15FPD", "Top 5 FPD", FALSE),
-                                      
+                                      # checkboxInput("top15count", "Top 5 Count", FALSE),
+                                      # checkboxInput("top15FPD", "Top 5 FPD", FALSE),
+                                      # 
                                       
                                       checkboxInput(inputId = "showbr",
                                                     label = strong("Show Borough for Top 5 counts/FPD"),
@@ -80,9 +80,9 @@ navbarPage("NYC TAXI", id="nav",
                                       
                                     
                                       
-                                      radioButtons("subway", label = h4("Subway Station : "),
-                                                   choices = list("Do not appear" = 1, "Show all stations" = 2, "Show unique station" = 3), 
-                                                   selected = 1),
+                                      # radioButtons("subway", label = h4("Subway Station : "),
+                                      #              choices = list("Do not appear" = 1, "Show all stations" = 2, "Show unique station" = 3), 
+                                      #              selected = 1),
                                       
                                       plotOutput("districttimeplot", height = 280),
                                       helpText(   a("Analysis",
@@ -134,13 +134,86 @@ navbarPage("NYC TAXI", id="nav",
                     )
            ),
            
-           tabPanel("Raw Data",
-                    hr(),
-                    DT::dataTableOutput("rawtable")
-           ),
+           # tabPanel("Raw Data",
+           #          hr(),
+           #          DT::dataTableOutput("rawtable")
+           # ),
            
-           tabPanel("Aiport",
-                    verbatimTextOutput("summary")
+           
+           
+           tabPanel("Airport Map",
+                    div(class="outer",
+                        
+                        tags$head(
+                          # Include our custom CSS
+                          includeCSS("styles.css"),
+                          includeScript("gomap.js")
+                        ),
+                        
+                        leafletOutput("airmap", width="100%", height="100%"),
+                        
+                        # Shiny versions prior to 0.11 should use class="modal" instead.
+                        absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
+                                      draggable = F, top = 60, left = "auto", right = 0, bottom = "auto",
+                                      width = 160, height = 180,
+                                      
+                                      radioButtons("CF", label = "Layers",
+                                                   choices = list("Count Number" = "count", "Fare Per Distance" = "FPD", "Cash Paying Percentage" = "cash"), 
+                                                   selected = "count")
+                                      
+                                      
+                        ),
+                        
+                        absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
+                                      draggable = TRUE, top = 60, left = 0, right = "auto", bottom = "auto",
+                                      width = 330, height = "auto",
+                                      
+                                      h3("Panel"),
+                                      
+                                      
+                                      selectInput("days", "Days", c("All Day", "Business Day", "Not Business Day"),selected = "All Day"),
+                                      
+                                      
+                                      checkboxInput(inputId = "showhr",
+                                                    label = strong("Show hours"),
+                                                    value = FALSE),
+                                      
+                                      conditionalPanel(condition = "input.showhr == false"
+                                                       
+                                      ),
+                                      
+                                      
+                                      conditionalPanel(condition = "input.showhr == true",
+                                                       sliderInput(inputId = "hr_adjust",
+                                                                   label = "Choose the time of the day:",
+                                                                   min = 0, max = 23, value = NULL, step = 1)
+                                      ),
+                                      
+                                      
+                                      
+                                      
+                                      # checkboxInput("top15count", "Top 5 Count", FALSE),
+                                      # checkboxInput("top15FPD", "Top 5 FPD", FALSE),
+                                      # 
+                                      
+                                      checkboxInput(inputId = "showbr",
+                                                    label = strong("Show Borough for Top 5 counts/FPD"),
+                                                    value = FALSE),
+                                      
+                                      conditionalPanel(condition = "input.showbr == true",
+                                                       selectInput("boroSelect", "Borough for Top 5 counts/FPD", 
+                                                                   c("Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island", "All"), 
+                                                                   selected = "All")
+                                      )
+                                      
+                                      
+                                      # THIS IS MY OWN AIRPORT ANALYSIS
+                                      # plotOutput("districttimeplot", height = 280),
+
+                        )
+                        
+                        
+                    )
            )
            
            
