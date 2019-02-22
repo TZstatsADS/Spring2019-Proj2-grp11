@@ -1,0 +1,39 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(sp)
+library(leaflet)
+library(ggmap)
+library(maptools)
+library(httr)
+library(rgdal)
+```
+
+```{r}
+nyc_map <- get_map(location = c(lon = -74.00, lat = 40.71), maptype = "terrain", zoom = 11)
+r <- GET('http://data.beta.nyc//dataset/0ff93d2d-90ba-457c-9f7e-39e47bf2ac5f/resource/35dd04fb-81b3-479b-a074-a27a37888ce7/download/d085e2f8d0b54d4590b1e7d1f35594c1pediacitiesnycneighborhoods.geojson')
+nyc_nbhd <- readOGR(content(r,'text'), 'OGRGeoJSON', verbose = F)
+```
+
+
+```{r}
+setwd('/Users/yeyejiang/Documents/GitHub/Spring2019-Proj2-grp11/output')
+save(nyc_nbhd, file = "nyc_nbhd.RData")
+```
+
+
+###
+###
+
+ggplot() + geom_polygon(data=nyc_nbhd, aes(x=long, y=lat, group=group))
+
+
+leaflet(nyc_nbhd) %>%
+  addTiles() %>% 
+  addPolylines(popup = ~neighborhood,color = "grey",weight = 0.5) %>%
+  addProviderTiles("CartoDB.Positron")
+
+
