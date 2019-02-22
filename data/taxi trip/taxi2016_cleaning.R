@@ -15,8 +15,6 @@ register_google(key = mykey)
 taxi2016 = fread("../data/taxi trip/taxi 2016.csv")
 taxi_zone = fread("../data/taxi trip/taxi_zone_lookup.csv")
 taxi2016 = taxi2016[,-8]
-names(taxi2016)
-names(taxi_zone)
 
 #############################################################################
 
@@ -33,9 +31,9 @@ colnames(taxi16)[10] = "DO.Borough"
 colnames(taxi16)[11] = "DO.zone"
 
 ### Delete useless info
-View(taxi16)
+#View(taxi16)
 taxi_2016 = taxi16[,-5]
-View(taxi_2016)
+#View(taxi_2016)
 
 #############################################################################
 ### Clean date and time
@@ -91,11 +89,8 @@ colnames(taxi_2016)[2] = "DO.date"
 taxi_2016$PU.hour = stri_extract_first_regex(pu.hour, "[0-9]{2}")
 taxi_2016$DO.hour = stri_extract_first_regex(do.hour, "[0-9]{2}")
 
-##################################################################################
-write_csv(taxi_2016, path = "../output/taxi2016_TimeClean.csv")
-
-taxi_2016 = fread("../output/taxi2016_TimeClean.csv")
-
+#write_csv(taxi_2016, path = "../output/taxi2016_TimeClean.csv")
+#taxi_2016 = fread("../output/taxi2016_TimeClean.csv")
 
 ### Get longitude and latitude
 
@@ -106,7 +101,6 @@ count.pick = taxi_2016 %>%
     value = n()
   )
 count.pick = count.pick[order(-count.pick$value),]
-View(count.pick)
 
 # Count Drop-off zones
 count.drop = taxi_2016 %>%
@@ -115,7 +109,6 @@ count.drop = taxi_2016 %>%
     value = n()
   )
 count.drop = count.drop[order(-count.drop$value),]
-View(count.drop)
 
 # get geographical info:
 pu.geo =count.pick %>%
@@ -126,14 +119,12 @@ do.geo =count.drop %>%
   mutate(Add = paste(`DO.zone`, "New York, NY", sep = ","))%>%
   mutate_geocode(Add)
 
-View(pu.geo)
+#View(pu.geo)
+#write_csv(pu.geo, path = "../output/taxi2016_PUgeo.csv")
+#write_csv(do.geo, path = "../output/taxi2016_DOgeo.csv")
 
-
-write_csv(pu.geo, path = "../output/taxi2016_PUgeo.csv")
-write_csv(do.geo, path = "../output/taxi2016_DOgeo.csv")
-
-PU.geo = read_csv("../output/taxi2016_PUgeo.csv")
-DO.geo = read_csv("../output/taxi2016_DOgeo.csv")
+#PU.geo = read_csv("../output/taxi2016_PUgeo.csv")
+#DO.geo = read_csv("../output/taxi2016_DOgeo.csv")
 
 # Match geo
 
@@ -145,13 +136,13 @@ colnames(taxi.geo)[14] = "PU.lat"
 taxi.geo = inner_join(taxi.geo, do.geo[,c(1,4,5)], by = "DO.zone")  # drop-off
 colnames(taxi.geo)[15] = "DO.lon"
 colnames(taxi.geo)[16] = "DO.lat"
-View(taxi.geo)
+#View(taxi.geo)
 
 taxi2016_Clean = taxi.geo[,c(1,5,7,8,13,14,11,2,6,9,10,15,16,12,3,4)]
-names(taxi2016_Clean)
+#names(taxi2016_Clean)
 
-##### Separate data set
-row = nrow(taxi2016_Clean)
-sp = round(nrow(taxi2016_Clean)/2)
-write_csv(taxi2016_Clean[1:sp,], path = "../output/taxi2016_1.csv")
-write_csv(taxi2016_Clean[(sp+1):row,], path = "../output/taxi2016_2.csv")
+##### Separate data set and output data
+#row = nrow(taxi2016_Clean)
+#sp = round(nrow(taxi2016_Clean)/2)
+#write_csv(taxi2016_Clean[1:sp,], path = "../output/taxi2016_1.csv")
+#write_csv(taxi2016_Clean[(sp+1):row,], path = "../output/taxi2016_2.csv")
