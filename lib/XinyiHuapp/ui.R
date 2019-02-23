@@ -16,11 +16,7 @@ navbarPage("NYC TRAFFIC", id="nav",
                                       
                                   selectInput("car","Car type",c("Taxi","Uber","Both"),selected = "Uber"),
                                   
-                                  textInput("year", "Choose year", "2015"),
-                                  
-                                  textInput("month", "Choose month", "1"),
-                                  
-                                  textInput("day", "Choose day", "1"),
+                                  textInput("date", "Choose date", "2015-1-1"),
                                   
                                   sliderInput("time", "Hours of Day:", 
                                                   min = 0, max = 24, value = 0, step = 1,
@@ -34,16 +30,3 @@ navbarPage("NYC TRAFFIC", id="nav",
 
 
 )
-
-
-
-
-
-
-
-
-
-
-
-
-

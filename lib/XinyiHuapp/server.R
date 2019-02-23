@@ -37,12 +37,14 @@ ubercount_byhour_id<-read.csv(urlfile)[,-c(1,2)]
 #urlfile <-'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/Xinyi-Hu-Taylor/output/PickUp2016_Clean.csv?token=Aszf_6MS3W-I4Xuwfv2l2F6v0qgighA3ks5ceW96wA%3D%3D'
 #taxi2016count_byhour_id <- read.csv(urlfile)
 
-
-taxi2016count_byhour_id<-fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/PickUp2016_Clean.csv")
-taxi2015count_byhour_id<-fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/PickUp2015_Clean.csv")
-taxicount_byhour_id<-bind_rows(taxi2015count_byhour_id, taxi2016count_byhour_id[,-2])
-View(taxicount_byhour_id)
+ubercount_byhour_id <- fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/testUber_Update.csv")
+taxi2016count_byhour_id<-fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/PU16_Update.csv")
+taxi2015count_byhour_id<-fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/PU15_Update.csv")
+taxicount_byhour_id<-bind_rows(taxi2015count_byhour_id, taxi2016count_byhour_id)
 both_byhour_id<-bind_rows(taxicount_byhour_id,ubercount_byhour_id)
+
+View(taxicount_byhour_id)
+View(ubercount_byhour_id)
 
 shinyServer(function(input, output) { 
   
@@ -50,42 +52,36 @@ shinyServer(function(input, output) {
       
   output$map<-renderLeaflet({
     
+    date = as.Date(input$date)
+    time = format(strptime(input$time, "%H"), format="%H:%M:%S")
+    date_time = paste(date, time, sep = " ")
+    
     if (input$car == 'Uber'){
-      
-      date_time = paste( paste(input$year,paste(input$month,sep = ""),input$day,sep = "-"),
-                         paste(input$time, ":00:00", sep = ""),
-                         sep = " ")
-      t <- filter(ubercount_byhour_id, groups_byhour==)
+     t <- filter(ubercount_byhour_id, groups_byhour==date_time)
       map<-leaflet(t)%>% addTiles() %>%
         setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
-        addCircles(lng=t$mean_long,lat=t$mean_lat,weight = 5,radius = t$Count_byhour^(1/4)*200,
+        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
                    color = "black",stroke = TRUE,fillOpacity = 0.5)
       return (map)
     }
     
     else if(input$car == 'Taxi'){
-      
-      date_time = paste( paste(input$year,input$month,input$day,sep = "-"),
-                         paste(input$time, ":00:00", sep = ""),
-                         sep = " ")
-      t <- filter(taxicount_byhour_id, groups_byhour==date_time)
+       t <- filter(taxicount_byhour_id, groups_byhour==date_time)
+       map<-leaflet(t)%>% addTiles() %>%
         setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
-        addCircles(lng=t$mean_long,lat=t$mean_lat,weight = 5,radius = t$Count_byhour^(1/4)*200,
+        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
                    color = "yellow",stroke = TRUE,fillOpacity = 0.5)
       return (map)
     }
     
     else {
-      t <- filter(both_byhour_id, 
-                  groups_byhour==paste(input$date,
-                                       paste(input$time, ":00:00", sep = ""),
-                                       sep = " "))
+      t <- filter(both_byhour_id, groups_byhour==date_time)
       map<-leaflet(t)%>% addTiles() %>%
         setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
-        addCircles(lng=t$mean_long,lat=t$mean_lat,weight = 5,radius = t$Count_byhour^(1/4)*200,
+        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
                    color = "blue",stroke = TRUE,fillOpacity = 0.5)
       return (map)
       
@@ -95,4 +91,3 @@ shinyServer(function(input, output) {
          })
 
   })
-
