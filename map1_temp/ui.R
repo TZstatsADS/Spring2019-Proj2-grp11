@@ -9,7 +9,7 @@ a <- navbarPage("My Application",
                                 leafletOutput("map1", width = "100%", height = "100%"),
                                 
                                 absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                                           draggable = TRUE, top = 60, left = 0, right = "auto", bottom = "auto",
+                                           draggable = TRUE, top = 60, left = 0, right = 40, bottom = "auto",
                                            width = 330, height = "auto",
                                            
                                            h3("Panel"),
@@ -21,6 +21,17 @@ a <- navbarPage("My Application",
                                                                    min = 0, max = 23, value = 8, step=1)
                                
 
+                             ),
+                             
+                             absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
+                                           draggable = F, top = 60, left = "auto", right = 0, bottom = "auto",
+                                           width = 160, height = 120,
+                                           
+                                           radioButtons("CF", label = "Layers",
+                                                        choices = list("Count" = "count", "Fare Per Distance" = "FPD","Cluster" = "Cluster"), 
+                                                        selected = "count")
+                                           
+                                           
                              )
                              
                              
