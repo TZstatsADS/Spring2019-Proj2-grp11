@@ -14,6 +14,9 @@ a <- navbarPage("My Application",
                                            
                                            h3("Panel"),
                                            
+                                           selectInput("select", label = h3("Weather Condition"), 
+                                                       choices = list("Sunny Days", "Bad Weather Days"), selected = 1),
+                                           
                                            sliderInput("hour", "Hours of Day:",  
                                                                    min = 0, max = 23, value = 8, step=1)
                                
