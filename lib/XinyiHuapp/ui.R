@@ -1,7 +1,6 @@
 library(shiny)
 library(leaflet)
-setwd("~/Desktop/master/lib/panel2 demo")
-  
+
 navbarPage("NYC TRAFFIC", id="nav", 
            
            tabPanel("Time Flow Map",
@@ -15,10 +14,14 @@ navbarPage("NYC TRAFFIC", id="nav",
                                
                                   h2("Taxi and Uber hourly flow change"),
                                       
-                                  selectInput("car","car type",c("Taxi","Uber","Both"),selected = "Uber"),
-                                      
-                                  textInput("date", "Choose date", "2015-1-8 22:00:00"),
-                                      
+                                  selectInput("car","Car type",c("Taxi","Uber","Both"),selected = "Uber"),
+                                  
+                                  textInput("year", "Choose year", "2015"),
+                                  
+                                  textInput("month", "Choose month", "1"),
+                                  
+                                  textInput("day", "Choose day", "1"),
+                                  
                                   sliderInput("time", "Hours of Day:", 
                                                   min = 0, max = 24, value = 0, step = 1,
                                                   animate=animationOptions(interval = 500)),
