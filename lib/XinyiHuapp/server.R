@@ -26,32 +26,32 @@ library(dplyr)
 library(data.table)
 
 
-#read the uber data
-### Uber
-urlfile<-'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/master/data/test_uber.csv?token=AsziG_KERfkKFblH2rcJSOWCdxheu7CNks5ceU4VwA%3D%3D'
-ubercount_byhour_id<-read.csv(urlfile)[,-c(1,2)]
+################ Read Uber data
+#urlfile<-'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/master/data/test_uber.csv?token=AsziG_KERfkKFblH2rcJSOWCdxheu7CNks5ceU4VwA%3D%3D'
+#ubercount_byhour_id<-read.csv(urlfile)[,-c(1,2)]
 
-### Taxi
+################ Read taxi data
 #urlfile <- 'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/Xinyi-Hu-Taylor/output/PickUp2015_Clean.csv?token=Aszf_0Mq2SiQptdygH8slOD3Sq1h6DK3ks5ceW8TwA%3D%3D'
 #taxi2015count_byhour_id <- read.csv(urlfile)
 #urlfile <-'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/Xinyi-Hu-Taylor/output/PickUp2016_Clean.csv?token=Aszf_6MS3W-I4Xuwfv2l2F6v0qgighA3ks5ceW96wA%3D%3D'
 #taxi2016count_byhour_id <- read.csv(urlfile)
 
-ubercount_byhour_id <- fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/testUber_Update.csv")
-taxi2016count_byhour_id<-fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/PU16_Update.csv")
-taxi2015count_byhour_id<-fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/PU15_Update.csv")
-taxicount_byhour_id<-bind_rows(taxi2015count_byhour_id, taxi2016count_byhour_id)
-both_byhour_id<-bind_rows(taxicount_byhour_id,ubercount_byhour_id)
+################ Read Uber data
+#ubercount_byhour_id <- fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/ubercount_byhour_id.csv")
+################ Read taxi data
+#taxi2016count_byhour_id<-fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/PU16_Update.csv")
+#taxi2015count_byhour_id<-fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/PU15_Update.csv")
+#taxicount_byhour_id<-bind_rows(taxi2015count_byhour_id, taxi2016count_byhour_id)
+#both_byhour_id<-bind_rows(taxicount_byhour_id,ubercount_byhour_id)
 
-View(taxicount_byhour_id)
-View(ubercount_byhour_id)
+#View(taxicount_byhour_id)
+#View(ubercount_byhour_id)
 
 shinyServer(function(input, output) { 
   
-  #observe({
-      
   output$map<-renderLeaflet({
     
+    # Formalize the date and time
     date = as.Date(input$date)
     time = format(strptime(input$time, "%H"), format="%H:%M:%S")
     date_time = paste(date, time, sep = " ")

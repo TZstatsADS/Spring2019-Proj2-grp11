@@ -20,7 +20,7 @@ navbarPage("NYC TRAFFIC", id="nav",
                                   
                                   sliderInput("time", "Hours of Day:", 
                                                   min = 0, max = 24, value = 0, step = 1,
-                                                  animate=animationOptions(interval = 500)),
+                                                  animate=animationOptions(interval = 100)),
                                   helpText("Click play button to see dynamic flow data")
                     )
                     
