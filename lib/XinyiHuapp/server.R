@@ -1,7 +1,7 @@
 
 ########## edit version
 
-packages.used=c("rgeos", "sp", "rgdal", 
+packages.used=c("tibble","rgeos", "sp", "rgdal", 
                 "leaflet", "htmlwidgets", "shiny",
                 "ggplot2", "dplyr", "data.table","DT")
 
@@ -14,7 +14,7 @@ if(length(packages.needed)>0){
   install.packages(packages.needed, dependencies = TRUE)
 }
 
-
+library(tibble)
 library(rgeos)
 library(sp)
 library(rgdal)
@@ -27,14 +27,14 @@ library(data.table)
 
 
 ################ Read Uber data
-#urlfile<-'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/master/data/test_uber.csv?token=AsziG_KERfkKFblH2rcJSOWCdxheu7CNks5ceU4VwA%3D%3D'
-#ubercount_byhour_id<-read.csv(urlfile)[,-c(1,2)]
+urlfile<-'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/Xinyi-Hu-Taylor/output/ubercount_byhour_id.csv?token=Aszf_-jlp1f0_087w7JKP7v8ir3xkvQWks5ceqqKwA%3D%3D'
+ubercount_byhour_id<-read_csv(urlfile)
 
 ################ Read taxi data
-#urlfile <- 'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/Xinyi-Hu-Taylor/output/PickUp2015_Clean.csv?token=Aszf_0Mq2SiQptdygH8slOD3Sq1h6DK3ks5ceW8TwA%3D%3D'
-#taxi2015count_byhour_id <- read.csv(urlfile)
-#urlfile <-'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/Xinyi-Hu-Taylor/output/PickUp2016_Clean.csv?token=Aszf_6MS3W-I4Xuwfv2l2F6v0qgighA3ks5ceW96wA%3D%3D'
-#taxi2016count_byhour_id <- read.csv(urlfile)
+urlfile <- 'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/Xinyi-Hu-Taylor/output/PU15_Update.csv?token=Aszf_8cArM9UTIC_oLz7o_m0_UY1UdEIks5ceqolwA%3D%3D'
+taxi2015count_byhour_id <- read_csv(urlfile)
+urlfile <-'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/Xinyi-Hu-Taylor/output/PU16_Update.csv?token=Aszf_1MTcNIIYyKFoFvVa1eII4egrSQxks5ceqpTwA%3D%3D'
+taxi2016count_byhour_id <- read_csv(urlfile)
 
 ################ Read Uber data
 #ubercount_byhour_id <- fread("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output/ubercount_byhour_id.csv")
