@@ -1,0 +1,58 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(sp)
+library(dplyr)
+setwd("../")
+getwd()
+```
+
+```{r}
+load('../output/nyc_nbhd.RData')
+load('../output/taxidata.RData')
+taxi1<-read.csv('../output/taxi2016_1.csv')
+taxi2<-read.csv('../output/taxi2016_2.csv')
+taxiall <- rbind(taxi1,taxi2)
+#weather<-read.csv('../data/weather_small.csv',as.is=TRUE)
+#nyc_neighborhoods
+```
+
+```{r}
+All_FPD <- na.omit(taxi %>% select(PUnbhd,PU.hour,fare_amount,trip_distance)%>%group_by(PU.hour, PUnbhd) %>%
+  mutate(FPD=sum(fare_amount)/sum(trip_distance)) %>% select(PUnbhd,PU.hour,FPD))
+```
+
+```{r}
+All_FPD
+```
+
+```{r}
+All_FPD <- All_FPD %>% mutate(FPD_level = ifelse(FPD>=0 & FPD < 1, 0,
+                                   ifelse(FPD>=1 & FPD < 2,1,
+                                          ifelse(FPD>=2 & FPD < 3,2,
+                                                 ifelse(FPD>=3 & FPD < 4,3,
+                                                        ifelse(FPD>=4 & FPD < 5,4,
+                                                               ifelse(FPD>=5 & FPD < 6,5,
+                                                                      ifelse(FPD>=6 & FPD < 7,6,7))))))))
+```
+
+```{r}
+FPD_map <- All_FPD
+FPD_map
+```
+
+```{r}
+#FPD_map <- geo_join(nyc_nbhd, All_FPD, "neighborhood", "PUnbhd")
+```
+
+```{r}
+#FPD_map@data <- na.omit(FPD_map@data)
+```
+
+```{r}
+save(FPD_map,file = "../output/FPD_map.RData")
+```
+

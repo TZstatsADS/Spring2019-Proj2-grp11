@@ -19,8 +19,25 @@ weather<-read.csv('../data/weather_small.csv',as.is=TRUE)
 ```
 
 ```{r}
-#head(taxi1)
+taxiall <- rbind(taxi1,taxi2)
 ```
+
+```{r}
+a <- 0
+for(i in unique(sort(taxiall$PU.zone))){
+  if(i %in% unique(nyc_nbhd@data$neighborhood)){
+    a = a+1
+  }
+  #print(i)
+}
+#unique(sort(taxiall$PU.zone))
+```
+
+
+```{r}
+unique(nyc_nbhd@data$neighborhood)
+```
+
 
 ```{r}
 nbhd<-function(ll){
@@ -36,12 +53,14 @@ nbhd<-function(ll){
 pickupnbhd1<-taxi1%>%select(PU.lon,PU.lat)%>%nbhd()
 colnames(pickupnbhd1)<-c('PUnbhd','PUnbhdBorough')
 
+
 dropoffnbhd1<-taxi1%>%select(DO.lon,DO.lat)%>%nbhd()
 colnames(dropoffnbhd1)<-c('DOnbhd','DOnbhdBorough')
 
 #taxi2
 pickupnbhd2<-taxi2%>%select(PU.lon,PU.lat)%>%nbhd()
 colnames(pickupnbhd2)<-c('PUnbhd','PUnbhdBorough')
+
 
 dropoffnbhd2<-taxi2%>%select(DO.lon,DO.lat)%>%nbhd()
 colnames(dropoffnbhd2)<-c('DOnbhd','DOnbhdBorough')
@@ -51,6 +70,15 @@ colnames(dropoffnbhd2)<-c('DOnbhd','DOnbhdBorough')
 updatetaxi1<-cbind(taxi1,pickupnbhd1,dropoffnbhd1)
 updatetaxi2<-cbind(taxi2,pickupnbhd2,dropoffnbhd2)
 taxidata<-rbind(updatetaxi1,updatetaxi2)
+```
+
+
+```{r}
+#A<-taxiall%>%select(PU.lon,PU.lat)%>%nbhd()
+```
+
+```{r}
+#unique(taxiall$neighborhood)
 ```
 
 
@@ -71,7 +99,74 @@ taxi<-cbind(taxidata,pu_weather,do_weather)
 ```
 
 ```{r}
-save(taxi, file = "/Users/yeyejiang/Desktop/taxidata.RData")
-#save(taxi, file = "..output/taxidata.RData")
+#clean taxi data and add FPD column
+# taxi <- taxi %>% filter(trip_distance>0) %>% 
+#   filter(fare_amount > 0) %>% 
+#   filter(trip_distance!=3180000) %>% 
+#   mutate(FPD=fare_amount/trip_distance) %>% filter(FPD <= 15)
+```
+
+```{r}
+All_FPD <- na.omit(taxi %>% filter(trip_distance>0) %>% 
+  filter(fare_amount > 0) %>% 
+  filter(trip_distance!=3180000) %>% select(PUnbhd,PU.hour,fare_amount,trip_distance)%>%group_by(PU.hour, PUnbhd) %>%
+  mutate(FPD=sum(fare_amount)/sum(trip_distance)) %>% select(PUnbhd,PU.hour,FPD))
+
+```
+
+```{r}
+All_FPD
+```
+
+
+```{r}
+#boxplot(taxi$FPD)
+```
+
+```{r}
+All_FPD <- All_FPD %>% mutate(FPD_level = ifelse(FPD>=0 & FPD < 1, 0,
+                                   ifelse(FPD>=1 & FPD < 2,1,
+                                          ifelse(FPD>=2 & FPD < 3,2,
+                                                 ifelse(FPD>=3 & FPD < 4,3,
+                                                        ifelse(FPD>=4 & FPD < 5,4,
+                                                               ifelse(FPD>=5 & FPD < 6,5,
+                                                                      ifelse(FPD>=6 & FPD < 7,6,7))))))))
+```
+
+```{r}
+All_FPD
+```
+
+
+```{r}
+#taxi <- A
+```
+
+```{r}
+All_Count <- taxi %>% group_by(PUnbhd,PU.hour) %>% tally()
+names(All_Count) <- c("PUnbhd","PU.hour","Count")
+All_Count
+```
+
+
+```{r}
+#head(taxi)
+#FPD_result <- taxi %>% group_by(FPD,FPD_level,PUnbhd) %>% tally()
+WWW <- geo_join(nyc_nbhd, All_FPD, "neighborhood", "PUnbhd")
+#TTT <- geo_join(nyc_nbhd, All_Count, "neighborhood", "PUnbhd")
+```
+
+```{r}
+table(na.omit(WWW@data)$FPD_level)
+cbind(All_Count,All_FPD,by="PUnbhd")
+# hist(FPD_result$FPD)
+# hist(x=FPD_result$FPD_level)
+# hist(na.omit(WWW@data$FPD))
+```
+
+
+```{r}
+#save(taxi, file = "/Users/yeyejiang/Desktop/taxidata.RData")
+save(taxi, file = "../output/taxidata.RData")
 ```
 
