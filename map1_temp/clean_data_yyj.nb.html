@@ -1764,13 +1764,29 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzcClcbmxpYnJhcnkoZHBseXIpXG4jc2V0d2QoXCIuLi9cIilcbmxvYWQoJy9Vc2Vycy95ZXllamlhbmcvRG9jdW1lbnRzL0dpdEh1Yi9TcHJpbmcyMDE5LVByb2oyLWdycDExL291dHB1dC9ueWNfbmJoZC5SRGF0YScpXG50YXhpMTwtcmVhZC5jc3YoJy9Vc2Vycy95ZXllamlhbmcvRGVza3RvcC90YXhpMjAxNl8xLmNzdicpXG50YXhpMjwtcmVhZC5jc3YoJy9Vc2Vycy95ZXllamlhbmcvRGVza3RvcC90YXhpMjAxNl8yLmNzdicpXG4jbnljX25laWdoYm9yaG9vZHNcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzcClcbmxpYnJhcnkoZHBseXIpXG5zZXR3ZChcIi4uL1wiKVxuYGBgIn0= -->
 <pre class="r"><code>library(sp)
 library(dplyr)
-#setwd(&quot;../&quot;)
-load('/Users/yeyejiang/Documents/GitHub/Spring2019-Proj2-grp11/output/nyc_nbhd.RData')
-taxi1&lt;-read.csv('/Users/yeyejiang/Desktop/taxi2016_1.csv')
-taxi2&lt;-read.csv('/Users/yeyejiang/Desktop/taxi2016_2.csv')
+setwd(&quot;../&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiVGhlIHdvcmtpbmcgZGlyZWN0b3J5IHdhcyBjaGFuZ2VkIHRvIC9Vc2Vycy95ZXllamlhbmcvRG9jdW1lbnRzL0dpdEh1Yi9TcHJpbmcyMDE5LVByb2oyLWdycDExIGluc2lkZSBhIG5vdGVib29rIGNodW5rLiBUaGUgd29ya2luZyBkaXJlY3Rvcnkgd2lsbCBiZSByZXNldCB3aGVuIHRoZSBjaHVuayBpcyBmaW5pc2hlZCBydW5uaW5nLiBVc2UgdGhlIGtuaXRyIHJvb3QuZGlyIG9wdGlvbiBpbiB0aGUgc2V0dXAgY2h1bmsgdG8gY2hhbmdlIHRoZSB3b3JraW5nIGRpcmVjdG9yeSBmb3Igbm90ZWJvb2sgY2h1bmtzLlxuIn0= -->
+<pre><code>The working directory was changed to /Users/yeyejiang/Documents/GitHub/Spring2019-Proj2-grp11 inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the working directory for notebook chunks.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2V0d2QoKVxuYGBgIn0= -->
+<pre class="r"><code>getwd()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiL1VzZXJzL3lleWVqaWFuZy9Eb2N1bWVudHMvR2l0SHViL1NwcmluZzIwMTktUHJvajItZ3JwMTFcIlxuIn0= -->
+<pre><code>[1] &quot;/Users/yeyejiang/Documents/GitHub/Spring2019-Proj2-grp11&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9hZCgnLi4vb3V0cHV0L255Y19uYmhkLlJEYXRhJylcbnRheGkxPC1yZWFkLmNzdignLi4vb3V0cHV0L3RheGkyMDE2XzEuY3N2JylcbnRheGkyPC1yZWFkLmNzdignLi4vb3V0cHV0L3RheGkyMDE2XzIuY3N2JylcbndlYXRoZXI8LXJlYWQuY3N2KCcuLi9kYXRhL3dlYXRoZXJfc21hbGwuY3N2Jyxhcy5pcz1UUlVFKVxuI255Y19uZWlnaGJvcmhvb2RzXG5gYGAifQ== -->
+<pre class="r"><code>load('../output/nyc_nbhd.RData')
+taxi1&lt;-read.csv('../output/taxi2016_1.csv')
+taxi2&lt;-read.csv('../output/taxi2016_2.csv')
+weather&lt;-read.csv('../data/weather_small.csv',as.is=TRUE)
 #nyc_neighborhoods</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1779,13 +1795,6 @@ taxi2&lt;-read.csv('/Users/yeyejiang/Desktop/taxi2016_2.csv')
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2hlYWQodGF4aTEpXG5gYGAifQ== -->
 <pre class="r"><code>#head(taxi1)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2hlYWQodGF4aTIpXG5gYGAifQ== -->
-<pre class="r"><code>#head(taxi2)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1824,21 +1833,33 @@ taxidata&lt;-rbind(updatetaxi1,updatetaxi2)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0d2QoXCIuLi9cIilcbmBgYCJ9 -->
-<pre class="r"><code>setwd(&quot;../&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiVGhlIHdvcmtpbmcgZGlyZWN0b3J5IHdhcyBjaGFuZ2VkIHRvIC9Vc2Vycy95ZXllamlhbmcvRG9jdW1lbnRzL0dpdEh1Yi9TcHJpbmcyMDE5LVByb2oyLWdycDExIGluc2lkZSBhIG5vdGVib29rIGNodW5rLiBUaGUgd29ya2luZyBkaXJlY3Rvcnkgd2lsbCBiZSByZXNldCB3aGVuIHRoZSBjaHVuayBpcyBmaW5pc2hlZCBydW5uaW5nLiBVc2UgdGhlIGtuaXRyIHJvb3QuZGlyIG9wdGlvbiBpbiB0aGUgc2V0dXAgY2h1bmsgdG8gY2hhbmdlIHRoZSB3b3JraW5nIGRpcmVjdG9yeSBmb3Igbm90ZWJvb2sgY2h1bmtzLlxuIn0= -->
-<pre><code>The working directory was changed to /Users/yeyejiang/Documents/GitHub/Spring2019-Proj2-grp11 inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the working directory for notebook chunks.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2F2ZSh0YXhpZGF0YSwgZmlsZSA9IFwib3V0cHV0L3RheGlkYXRhLlJEYXRhXCIpXG5gYGAifQ== -->
-<pre class="r"><code>save(taxidata, file = &quot;output/taxidata.RData&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2FkZCBjb2x1bW5zXG50YXhpZGF0YTwtdGF4aWRhdGElPiVtdXRhdGUocHVfZGF0ZT1zdWJzdHJpbmcodHBlcF9waWNrdXBfZGF0ZXRpbWUsMSwxMCksZG9fZGF0ZT1zdWJzdHJpbmcodHBlcF9kcm9wb2ZmX2RhdGV0aW1lLDEsMTApKVxudGF4aWRhdGF0ZW1wPC10YXhpZGF0YSU+JW11dGF0ZShwdV93bD1pZl9lbHNlKFBVLkJvcm91Z2ggJWluJSBjKCdNYW5oYXR0YW4nLCAnQnJvbngnLCAnVW5rbm93bicpLCAnTlkgQ0lUWSBDRU5UUkFMIFBBUkssIE5ZIFVTJyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWZfZWxzZShQVS5Cb3JvdWdoICVpbiUgYygnQnJvb2tseW4nLCdRdWVlbnMnKSwgJ0xBIEdVQVJESUEgQUlSUE9SVCwgTlkgVVMnLCdXT09EQlJJREdFIFRXUCAxLjEgRVNFLCBOSiBVUycpKSlcbnRheGlkYXRhdGVtcDwtdGF4aWRhdGF0ZW1wJT4lbXV0YXRlKGRvX3dsPWlmX2Vsc2UoRE8uQm9yb3VnaCAlaW4lIGMoJ01hbmhhdHRhbicsICdCcm9ueCcsICdVbmtub3duJyksICdOWSBDSVRZIENFTlRSQUwgUEFSSywgTlkgVVMnLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZl9lbHNlKERPLkJvcm91Z2ggJWluJSBjKCdCcm9va2x5bicsJ1F1ZWVucycpLCAnTEEgR1VBUkRJQSBBSVJQT1JULCBOWSBVUycsJ1dPT0RCUklER0UgVFdQIDEuMSBFU0UsIE5KIFVTJykpKVxuI2xlZnQgam9pbiB3ZWF0aGVyIGRhdGFcbnB1X3dlYXRoZXI8LXRheGlkYXRhdGVtcCU+JWxlZnRfam9pbih3ZWF0aGVyLGJ5PWMoJ3B1X2RhdGUnPSdEQVRFJywncHVfd2wnPSdOQU1FJykpJT4lc2VsZWN0KEJBRF9XRUFUSEVSKVxuY29sbmFtZXMocHVfd2VhdGhlcik8LSdwdV93ZWF0aGVyJ1xuZG9fd2VhdGhlcjwtdGF4aWRhdGF0ZW1wJT4lbGVmdF9qb2luKHdlYXRoZXIsYnk9YygnZG9fZGF0ZSc9J0RBVEUnLCdkb193bCc9J05BTUUnKSklPiVzZWxlY3QoQkFEX1dFQVRIRVIpXG5jb2xuYW1lcyhkb193ZWF0aGVyKTwtJ2RvX3dlYXRoZXInXG50YXhpPC1jYmluZCh0YXhpZGF0YSxwdV93ZWF0aGVyLGRvX3dlYXRoZXIpXG5gYGAifQ== -->
+<pre class="r"><code>#add columns
+taxidata&lt;-taxidata%&gt;%mutate(pu_date=substring(tpep_pickup_datetime,1,10),do_date=substring(tpep_dropoff_datetime,1,10))
+taxidatatemp&lt;-taxidata%&gt;%mutate(pu_wl=if_else(PU.Borough %in% c('Manhattan', 'Bronx', 'Unknown'), 'NY CITY CENTRAL PARK, NY US',
+                             if_else(PU.Borough %in% c('Brooklyn','Queens'), 'LA GUARDIA AIRPORT, NY US','WOODBRIDGE TWP 1.1 ESE, NJ US')))
+taxidatatemp&lt;-taxidatatemp%&gt;%mutate(do_wl=if_else(DO.Borough %in% c('Manhattan', 'Bronx', 'Unknown'), 'NY CITY CENTRAL PARK, NY US',
+                             if_else(DO.Borough %in% c('Brooklyn','Queens'), 'LA GUARDIA AIRPORT, NY US','WOODBRIDGE TWP 1.1 ESE, NJ US')))
+#left join weather data
+pu_weather&lt;-taxidatatemp%&gt;%left_join(weather,by=c('pu_date'='DATE','pu_wl'='NAME'))%&gt;%select(BAD_WEATHER)
+colnames(pu_weather)&lt;-'pu_weather'
+do_weather&lt;-taxidatatemp%&gt;%left_join(weather,by=c('do_date'='DATE','do_wl'='NAME'))%&gt;%select(BAD_WEATHER)
+colnames(do_weather)&lt;-'do_weather'
+taxi&lt;-cbind(taxidata,pu_weather,do_weather)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>pickupnbhd1%&gt;%dim() pickupnbhd2%&gt;%dim() dropoffnbhd1%&gt;%dim() dropoffnbhd2%&gt;%dim()</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2F2ZSh0YXhpLCBmaWxlID0gXCIvVXNlcnMveWV5ZWppYW5nL0Rlc2t0b3AvdGF4aWRhdGEuUkRhdGFcIilcbiNzYXZlKHRheGksIGZpbGUgPSBcIi4ub3V0cHV0L3RheGlkYXRhLlJEYXRhXCIpXG5gYGAifQ== -->
+<pre class="r"><code>save(taxi, file = &quot;/Users/yeyejiang/Desktop/taxidata.RData&quot;)
+#save(taxi, file = &quot;..output/taxidata.RData&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkoc3ApCmxpYnJhcnkoZHBseXIpCiNzZXR3ZCgiLi4vIikKbG9hZCgnL1VzZXJzL3lleWVqaWFuZy9Eb2N1bWVudHMvR2l0SHViL1NwcmluZzIwMTktUHJvajItZ3JwMTEvb3V0cHV0L255Y19uYmhkLlJEYXRhJykKdGF4aTE8LXJlYWQuY3N2KCcvVXNlcnMveWV5ZWppYW5nL0Rlc2t0b3AvdGF4aTIwMTZfMS5jc3YnKQp0YXhpMjwtcmVhZC5jc3YoJy9Vc2Vycy95ZXllamlhbmcvRGVza3RvcC90YXhpMjAxNl8yLmNzdicpCiNueWNfbmVpZ2hib3Job29kcwpgYGAKCmBgYHtyfQojaGVhZCh0YXhpMSkKYGBgCgpgYGB7cn0KI2hlYWQodGF4aTIpCmBgYAoKYGBge3J9Cm5iaGQ8LWZ1bmN0aW9uKGxsKXsKICBjb2xuYW1lcyhsbCk9YygnbG9uJywnbGF0JykKICBsbF9zcGRmPC1sbAogIGNvb3JkaW5hdGVzKGxsX3NwZGYpPSB+bG9uICsgbGF0CiAgcHJvajRzdHJpbmcobGxfc3BkZikgPC0gcHJvajRzdHJpbmcobnljX25iaGQpCiAgbWF0Y2g8LW92ZXIobGxfc3BkZiwgbnljX25iaGQpCiAgcmV0dXJuKG1hdGNoWyxjKDEsMyldKQp9CgojdGF4aTEKcGlja3VwbmJoZDE8LXRheGkxJT4lc2VsZWN0KFBVLmxvbixQVS5sYXQpJT4lbmJoZCgpCmNvbG5hbWVzKHBpY2t1cG5iaGQxKTwtYygnUFVuYmhkJywnUFVuYmhkQm9yb3VnaCcpCgpkcm9wb2ZmbmJoZDE8LXRheGkxJT4lc2VsZWN0KERPLmxvbixETy5sYXQpJT4lbmJoZCgpCmNvbG5hbWVzKGRyb3BvZmZuYmhkMSk8LWMoJ0RPbmJoZCcsJ0RPbmJoZEJvcm91Z2gnKQoKI3RheGkyCnBpY2t1cG5iaGQyPC10YXhpMiU+JXNlbGVjdChQVS5sb24sUFUubGF0KSU+JW5iaGQoKQpjb2xuYW1lcyhwaWNrdXBuYmhkMik8LWMoJ1BVbmJoZCcsJ1BVbmJoZEJvcm91Z2gnKQoKZHJvcG9mZm5iaGQyPC10YXhpMiU+JXNlbGVjdChETy5sb24sRE8ubGF0KSU+JW5iaGQoKQpjb2xuYW1lcyhkcm9wb2ZmbmJoZDIpPC1jKCdET25iaGQnLCdET25iaGRCb3JvdWdoJykKYGBgCgpgYGB7cn0KdXBkYXRldGF4aTE8LWNiaW5kKHRheGkxLHBpY2t1cG5iaGQxLGRyb3BvZmZuYmhkMSkKdXBkYXRldGF4aTI8LWNiaW5kKHRheGkyLHBpY2t1cG5iaGQyLGRyb3BvZmZuYmhkMikKdGF4aWRhdGE8LXJiaW5kKHVwZGF0ZXRheGkxLHVwZGF0ZXRheGkyKQpgYGAKCmBgYHtyfQpzZXR3ZCgiLi4vIikKc2F2ZSh0YXhpZGF0YSwgZmlsZSA9ICJvdXRwdXQvdGF4aWRhdGEuUkRhdGEiKQpgYGAKCgoKCnBpY2t1cG5iaGQxJT4lZGltKCkKcGlja3VwbmJoZDIlPiVkaW0oKQpkcm9wb2ZmbmJoZDElPiVkaW0oKQpkcm9wb2ZmbmJoZDIlPiVkaW0oKQoKCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkoc3ApCmxpYnJhcnkoZHBseXIpCnNldHdkKCIuLi8iKQpnZXR3ZCgpCmBgYAoKYGBge3J9CmxvYWQoJy4uL291dHB1dC9ueWNfbmJoZC5SRGF0YScpCnRheGkxPC1yZWFkLmNzdignLi4vb3V0cHV0L3RheGkyMDE2XzEuY3N2JykKdGF4aTI8LXJlYWQuY3N2KCcuLi9vdXRwdXQvdGF4aTIwMTZfMi5jc3YnKQp3ZWF0aGVyPC1yZWFkLmNzdignLi4vZGF0YS93ZWF0aGVyX3NtYWxsLmNzdicsYXMuaXM9VFJVRSkKI255Y19uZWlnaGJvcmhvb2RzCmBgYAoKYGBge3J9CiNoZWFkKHRheGkxKQpgYGAKCmBgYHtyfQpuYmhkPC1mdW5jdGlvbihsbCl7CiAgY29sbmFtZXMobGwpPWMoJ2xvbicsJ2xhdCcpCiAgbGxfc3BkZjwtbGwKICBjb29yZGluYXRlcyhsbF9zcGRmKT0gfmxvbiArIGxhdAogIHByb2o0c3RyaW5nKGxsX3NwZGYpIDwtIHByb2o0c3RyaW5nKG55Y19uYmhkKQogIG1hdGNoPC1vdmVyKGxsX3NwZGYsIG55Y19uYmhkKQogIHJldHVybihtYXRjaFssYygxLDMpXSkKfQoKI3RheGkxCnBpY2t1cG5iaGQxPC10YXhpMSU+JXNlbGVjdChQVS5sb24sUFUubGF0KSU+JW5iaGQoKQpjb2xuYW1lcyhwaWNrdXBuYmhkMSk8LWMoJ1BVbmJoZCcsJ1BVbmJoZEJvcm91Z2gnKQoKZHJvcG9mZm5iaGQxPC10YXhpMSU+JXNlbGVjdChETy5sb24sRE8ubGF0KSU+JW5iaGQoKQpjb2xuYW1lcyhkcm9wb2ZmbmJoZDEpPC1jKCdET25iaGQnLCdET25iaGRCb3JvdWdoJykKCiN0YXhpMgpwaWNrdXBuYmhkMjwtdGF4aTIlPiVzZWxlY3QoUFUubG9uLFBVLmxhdCklPiVuYmhkKCkKY29sbmFtZXMocGlja3VwbmJoZDIpPC1jKCdQVW5iaGQnLCdQVW5iaGRCb3JvdWdoJykKCmRyb3BvZmZuYmhkMjwtdGF4aTIlPiVzZWxlY3QoRE8ubG9uLERPLmxhdCklPiVuYmhkKCkKY29sbmFtZXMoZHJvcG9mZm5iaGQyKTwtYygnRE9uYmhkJywnRE9uYmhkQm9yb3VnaCcpCmBgYAoKYGBge3J9CnVwZGF0ZXRheGkxPC1jYmluZCh0YXhpMSxwaWNrdXBuYmhkMSxkcm9wb2ZmbmJoZDEpCnVwZGF0ZXRheGkyPC1jYmluZCh0YXhpMixwaWNrdXBuYmhkMixkcm9wb2ZmbmJoZDIpCnRheGlkYXRhPC1yYmluZCh1cGRhdGV0YXhpMSx1cGRhdGV0YXhpMikKYGBgCgoKYGBge3J9CiNhZGQgY29sdW1ucwp0YXhpZGF0YTwtdGF4aWRhdGElPiVtdXRhdGUocHVfZGF0ZT1zdWJzdHJpbmcodHBlcF9waWNrdXBfZGF0ZXRpbWUsMSwxMCksZG9fZGF0ZT1zdWJzdHJpbmcodHBlcF9kcm9wb2ZmX2RhdGV0aW1lLDEsMTApKQp0YXhpZGF0YXRlbXA8LXRheGlkYXRhJT4lbXV0YXRlKHB1X3dsPWlmX2Vsc2UoUFUuQm9yb3VnaCAlaW4lIGMoJ01hbmhhdHRhbicsICdCcm9ueCcsICdVbmtub3duJyksICdOWSBDSVRZIENFTlRSQUwgUEFSSywgTlkgVVMnLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmX2Vsc2UoUFUuQm9yb3VnaCAlaW4lIGMoJ0Jyb29rbHluJywnUXVlZW5zJyksICdMQSBHVUFSRElBIEFJUlBPUlQsIE5ZIFVTJywnV09PREJSSURHRSBUV1AgMS4xIEVTRSwgTkogVVMnKSkpCnRheGlkYXRhdGVtcDwtdGF4aWRhdGF0ZW1wJT4lbXV0YXRlKGRvX3dsPWlmX2Vsc2UoRE8uQm9yb3VnaCAlaW4lIGMoJ01hbmhhdHRhbicsICdCcm9ueCcsICdVbmtub3duJyksICdOWSBDSVRZIENFTlRSQUwgUEFSSywgTlkgVVMnLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmX2Vsc2UoRE8uQm9yb3VnaCAlaW4lIGMoJ0Jyb29rbHluJywnUXVlZW5zJyksICdMQSBHVUFSRElBIEFJUlBPUlQsIE5ZIFVTJywnV09PREJSSURHRSBUV1AgMS4xIEVTRSwgTkogVVMnKSkpCgojbGVmdCBqb2luIHdlYXRoZXIgZGF0YQpwdV93ZWF0aGVyPC10YXhpZGF0YXRlbXAlPiVsZWZ0X2pvaW4od2VhdGhlcixieT1jKCdwdV9kYXRlJz0nREFURScsJ3B1X3dsJz0nTkFNRScpKSU+JXNlbGVjdChCQURfV0VBVEhFUikKY29sbmFtZXMocHVfd2VhdGhlcik8LSdwdV93ZWF0aGVyJwpkb193ZWF0aGVyPC10YXhpZGF0YXRlbXAlPiVsZWZ0X2pvaW4od2VhdGhlcixieT1jKCdkb19kYXRlJz0nREFURScsJ2RvX3dsJz0nTkFNRScpKSU+JXNlbGVjdChCQURfV0VBVEhFUikKY29sbmFtZXMoZG9fd2VhdGhlcik8LSdkb193ZWF0aGVyJwp0YXhpPC1jYmluZCh0YXhpZGF0YSxwdV93ZWF0aGVyLGRvX3dlYXRoZXIpCmBgYAoKYGBge3J9CnNhdmUodGF4aSwgZmlsZSA9ICIvVXNlcnMveWV5ZWppYW5nL0Rlc2t0b3AvdGF4aWRhdGEuUkRhdGEiKQojc2F2ZSh0YXhpLCBmaWxlID0gIi4ub3V0cHV0L3RheGlkYXRhLlJEYXRhIikKYGBgCgo=</div>
 
 
 
