@@ -22,22 +22,6 @@ weather<-read.csv('../data/weather_small.csv',as.is=TRUE)
 taxiall <- rbind(taxi1,taxi2)
 ```
 
-```{r}
-a <- 0
-for(i in unique(sort(taxiall$PU.zone))){
-  if(i %in% unique(nyc_nbhd@data$neighborhood)){
-    a = a+1
-  }
-  #print(i)
-}
-#unique(sort(taxiall$PU.zone))
-```
-
-
-```{r}
-unique(nyc_nbhd@data$neighborhood)
-```
-
 
 ```{r}
 nbhd<-function(ll){
