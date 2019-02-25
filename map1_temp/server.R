@@ -31,17 +31,34 @@ setwd("../output")
 load('nyc_nbhd.RData')
 load('taxidata.RData')
 load('FPD_map.RData')
+load('Sunny_FPD_map.RData')
+load('Bad_FPD_map.RData')
 taxi<-taxi%>%na.omit()
 
 
 shinyServer(function(input, output) {
   
+  
+  
   output$map1 <- renderLeaflet({
     
-    timegpdata<- taxi%>%group_by(PU.hour,PUnbhd)%>%tally()
+    if (input$weather == "All Days"){
+      timegpdata<- taxi%>%group_by(PU.hour,PUnbhd)%>%tally()
+      timeFPD<- FPD_map %>% filter(PU.hour==input$hour)
+    }
+    else if(input$weather == "Sunny Days"){
+      timegpdata<- taxi%>%filter(pu_weather==0) %>% group_by(PU.hour,PUnbhd)%>%tally()
+      timeFPD<- Sunny_FPD_map %>% filter(PU.hour==input$hour)
+    }
+    else{
+      timegpdata<- taxi%>%filter(pu_weather==1) %>% group_by(PU.hour,PUnbhd)%>%tally()
+      timeFPD<- Bad_FPD_map %>% filter(PU.hour==input$hour)
+    }
+
+    
     mmmmmmmm<-timegpdata%>%filter(PU.hour==input$hour)
     map_data <- geo_join(nyc_nbhd, mmmmmmmm, "neighborhood", "PUnbhd")
-    map_data@data <- na.omit(map_data@data)
+    #map_data@data <- na.omit(map_data@data)
     
     pal2 <- colorBin(color[[1]], bins=c(0,100,1000,2000,4000,5000,10000))
     #pal2 <- colorNumeric(palette = "RdBu",domain = range(map_data@data$n, na.rm=T))
@@ -49,22 +66,9 @@ shinyServer(function(input, output) {
                     '<br><strong>Count of pick-ups: </strong><br>', map_data@data$n)
     
     
-    # leaflet(map_data) %>%
-    #   addTiles() %>% 
-    #   addPolygons(fillColor = ~pal2(n), popup = ~neighborhood,weight=1) %>% 
-    #   #addMarkers(~lng, ~lat, popup = ~neighborhood, data = points) %>%
-    #   addProviderTiles("CartoDB.Positron") %>%
-    #   setView(-73.98, 40.75, zoom = 12)
     
-    #FPD_result <- taxi %>% group_by(FPD,FPD_level, PUnbhd)%>% tally()
-    
-    #names(FPD_result) <- c("FPD", "FPD_level", "PUnbhd","total")
-    
-    #FPD_map_data <-  geo_join(nyc_nbhd, WWW, "neighborhood", "PUnbhd")
-    
-    timeFPD<- FPD_map %>% filter(PU.hour==input$hour)
     FPD_map_data <- geo_join(nyc_nbhd, timeFPD, "neighborhood", "PUnbhd")
-    FPD_map_data@data <- na.omit(FPD_map_data@data)
+    #FPD_map_data@data <- na.omit(FPD_map_data@data)
     
     
     #pal3 <- colorNumeric(palette = "Blues",domain = range(FPD_map@data$FPD_level, na.rm=T))
@@ -106,4 +110,6 @@ shinyServer(function(input, output) {
     
     
   })
+  
+  
 })
