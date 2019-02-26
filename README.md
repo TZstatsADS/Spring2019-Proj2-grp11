@@ -51,15 +51,29 @@ Term: Spring 2019
 
 + Team #
 + **Projec title**: + Team members
-	+ team member 1
-	+ team member 2
-	+ team member 3
-	+ team member 4
-	+ team member 5
+	+ Chen, Xinyi
+	+ Hu, Xinyi
+	+ Jiang, Hongye
+	+ Lin, Nelson
+	+ Zhang, Liwei 
 
-+ **Project summary**: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
++ **Project summary**: 
+This app three topics, which are traffic map, time flow map and airport traffic map. For the dataset, we covered NYC weather, taxi and uber pickup number, airport traffic between 2015 and 2016.
 
-+ **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
+The first map shows NYC traffic in normal weather(i.e. sunny) and bad weather(i.e. rainy, snowy, hail and foggy). 
+
+The second map focuses on comparing pickup numbers and locations of NYC taxi and uber by times. From the perspective of location, it's not hard to tell that NYC taxi is much more popular than uber in Manhattan Island, while only a small amount of taxi pickups appeared in Brooklyn and Queens. Besides, larger circle radiuses show larger pickup number. From 2015 to 2016, more customers chose to take Taxi rather than Uber. However, the Uber dataset only covers the first half year of 2015. If there is newer dataset for Uber, we might see a clearer trend of Taxi and Uber growth.
+
+The third map...
+
+
++ **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement.
+
+Panel 1(traffic map):
+
+Panel 2(time flow map): 
+
+Panel 3(airport traffic map):
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
