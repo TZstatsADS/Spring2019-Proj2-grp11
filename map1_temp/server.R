@@ -1,5 +1,4 @@
 library(shiny)
-#library(plyr)
 library(ggplot2)
 library(shiny)
 library(tigris)
@@ -26,15 +25,30 @@ label = list(label1 = c("<100","100-1000","1000~10,000","10,000~100,000","100,00
 title = list(t1 = "Pick Up Numbers", t2 = "Fair Per Distance")
 
 
-
+load('taxi9example.RData')
 setwd("../output")
 load('nyc_nbhd.RData')
-load('taxidata.RData')
-load('FPD_map.RData')
-load('Sunny_FPD_map.RData')
-load('Bad_FPD_map.RData')
-taxi<-taxi%>%na.omit()
+# load('taxidata.RData')
+# load('FPD_map.RData')
+# load('Sunny_FPD_map.RData')
+# load('Bad_FPD_map.RData')
+# taxi<-taxi%>%na.omit()
 
+PUfpd <- na.omit(PUfpd %>% group_by(PUnbhd,pickup_hour,pu_bad_weather) %>%
+                   mutate(FPD=sum(totalfare)/sum(totaldist)))
+
+add_level <- function(df){
+  A <- df %>% mutate(FPD_level = ifelse(FPD>=0 & FPD < 1, 0,
+                                        ifelse(FPD>=1 & FPD < 2,1,
+                                               ifelse(FPD>=2 & FPD < 3,2,
+                                                      ifelse(FPD>=3 & FPD < 4,3,
+                                                             ifelse(FPD>=4 & FPD < 5,4,
+                                                                    ifelse(FPD>=5 & FPD < 6,5,
+                                                                           ifelse(FPD>=6 & FPD < 7,6,7))))))))
+  return(A)
+}
+
+PUfpd <- add_level(PUfpd)
 
 shinyServer(function(input, output) {
   
@@ -43,22 +57,22 @@ shinyServer(function(input, output) {
   output$map1 <- renderLeaflet({
     
     if (input$weather == "All Days"){
-      timegpdata<- taxi%>%group_by(PU.hour,PUnbhd)%>%tally()
-      timeFPD<- FPD_map %>% filter(PU.hour==input$hour)
+      timegpdata<- PUcount
+      timeFPD<- PUfpd %>% filter(as.integer(pickup_hour)==input$hour)
     }
     else if(input$weather == "Sunny Days"){
-      timegpdata<- taxi%>%filter(pu_weather==0) %>% group_by(PU.hour,PUnbhd)%>%tally()
-      timeFPD<- Sunny_FPD_map %>% filter(PU.hour==input$hour)
+      timegpdata<- PUcount %>% filter(pu_bad_weather==0)
+      timeFPD<- PUfpd %>% filter(pu_bad_weather==0) %>% filter(as.integer(pickup_hour)==input$hour)
     }
     else{
-      timegpdata<- taxi%>%filter(pu_weather==1) %>% group_by(PU.hour,PUnbhd)%>%tally()
-      timeFPD<- Bad_FPD_map %>% filter(PU.hour==input$hour)
+      timegpdata<- PUcount %>% filter(pu_bad_weather==1)
+      timeFPD<- PUfpd %>% filter(pu_bad_weather==1) %>% filter(as.integer(pickup_hour)==input$hour)
     }
 
     
-    mmmmmmmm<-timegpdata%>%filter(PU.hour==input$hour)
+    mmmmmmmm<-timegpdata%>%filter(as.integer(pickup_hour)==input$hour)
     map_data <- geo_join(nyc_nbhd, mmmmmmmm, "neighborhood", "PUnbhd")
-    #map_data@data <- na.omit(map_data@data)
+    
     
     pal2 <- colorBin(color[[1]], bins=c(0,100,1000,2000,4000,5000,10000))
     #pal2 <- colorNumeric(palette = "RdBu",domain = range(map_data@data$n, na.rm=T))
@@ -68,7 +82,7 @@ shinyServer(function(input, output) {
     
     
     FPD_map_data <- geo_join(nyc_nbhd, timeFPD, "neighborhood", "PUnbhd")
-    #FPD_map_data@data <- na.omit(FPD_map_data@data)
+   
     
     
     #pal3 <- colorNumeric(palette = "Blues",domain = range(FPD_map@data$FPD_level, na.rm=T))
@@ -108,6 +122,9 @@ shinyServer(function(input, output) {
                   title = title[[2]])
     }
     
+    
+    
+
     
   })
   
