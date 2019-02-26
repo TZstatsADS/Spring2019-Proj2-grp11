@@ -13,7 +13,11 @@ getwd()
 
 
 ```{r}
+################################
+#########change this############
+################################
 load('taxi2016_9.RData')
+
 load('../output/nyc_nbhd.RData')
 weather<-read.csv('../data/weather_small.csv',as.is=TRUE)
 #taxi2016_9
@@ -22,7 +26,7 @@ weather<-read.csv('../data/weather_small.csv',as.is=TRUE)
 
 ###check
 ```{r}
-dim(taxi2016_9) 
+(a_raw<-dim(taxi2016_9))
 head(taxi2016_9)
 ```
 
@@ -34,12 +38,13 @@ filtaxi <- taxi2016_9%>%
   filter(trip_distance<80 & trip_distance>0)%>%
   filter(fare_amount<200 & fare_amount>0)%>%
   filter(fpd<10 & fpd>0.5)
-dim(filtaxi)
+(b_filter<-dim(filtaxi))
 #filtaxi%>%select(fpd)%>%boxplot()
 ```
 
 
 add neighborhood
+It may take time.
 ```{r}
 nbhd<-function(ll){
   colnames(ll)=c('lon','lat')
@@ -50,19 +55,23 @@ nbhd<-function(ll){
   return(match[,c(1,3)])
 }
 
-punbhd<-filtaxi%>%select(pickup_longitude,pickup_latitude)%>%nbhd()
+punbhd<-filtaxi%>%
+  select(pickup_longitude,pickup_latitude)%>%
+  nbhd()
 colnames(punbhd)<-c('PUnbhd','PUnbhdBorough')
 
 
-donbhd<-filtaxi%>%select(pickup_longitude,pickup_latitude)%>%nbhd()
+donbhd<-filtaxi%>%
+  select(pickup_longitude,pickup_latitude)%>%
+  nbhd()
 colnames(donbhd)<-c('DOnbhd','DOnbhdBorough')
 ```
 
 
 ###check
 ```{r}
-dim(punbhd)
-dim(donbhd)
+#dim(punbhd)
+#dim(donbhd)
 ```
 
 
@@ -76,7 +85,7 @@ dim(taxitemp)
 delete NA values
 ```{r}
 taxitemp1<- taxitemp%>%na.omit()
-dim(taxitemp1)
+(c_nbhd_naomit<-dim(taxitemp1))
 ```
 
 ```{r}
@@ -103,44 +112,49 @@ colnames(pu_weather)<-'pu_bad_weather'
 do_weather<-taxitemp3%>%left_join(weather,by=c('dropoff_date'='DATE','do_wl'='NAME'))%>%select(BAD_WEATHER)
 colnames(do_weather)<-'do_bad_weather'
 taxitemp4<-cbind(taxitemp1,pu_weather,do_weather)
+d_final<-dim(taxitemp4%>%na.omit())
 ```
 
 
-aggregate data
+######aggregate data
 ```{r}
-PUcount<- taxitemp4%>%
-  select(pickup_date, pickup_hour, PUnbhd, PUnbhdBorough, pu_bad_weather)%>%
+PU<- taxitemp4%>%
   group_by(pickup_date, pickup_hour, PUnbhd, PUnbhdBorough, pu_bad_weather)%>%
-  tally()
-DOcount<- taxitemp4%>%
-  select(dropoff_date, dropoff_hour, DOnbhd, DOnbhdBorough, do_bad_weather)%>%
+  summarize(totaldist=sum(trip_distance),
+            totalfare=sum(fare_amount),
+            count=n())%>%
+  select(pickup_date, pickup_hour, PUnbhd, PUnbhdBorough, pu_bad_weather, totaldist, totalfare, count)
+
+DO<- taxitemp4%>%
   group_by(dropoff_date, dropoff_hour, DOnbhd, DOnbhdBorough, do_bad_weather)%>%
-  tally()
-PUfpd<- taxitemp4%>%
-  group_by(pickup_hour, PUnbhd, PUnbhdBorough, pu_bad_weather)%>%
-  mutate(totaldist=sum(trip_distance),
-         totalfare=sum(fare_amount))%>%
-  select(pickup_hour, PUnbhd, PUnbhdBorough, pu_bad_weather, totaldist, totalfare)
-DOfpd<- taxitemp4%>%
-  group_by(dropoff_hour, DOnbhd, DOnbhdBorough, do_bad_weather)%>%
-  mutate(totaldist=sum(trip_distance),
-         totalfare=sum(fare_amount))%>%
-  select(dropoff_hour, DOnbhd, DOnbhdBorough, do_bad_weather, totaldist, totalfare)
+  summarize(totaldist=sum(trip_distance),
+            totalfare=sum(fare_amount),
+            count=n())%>%
+  select(dropoff_date, dropoff_hour, DOnbhd, DOnbhdBorough, do_bad_weather, totaldist, totalfare, count)
 ```
 
+
+check
 ```{r}
 #xx=taxitemp1%>%group_by(PUnbhd,PUnbhdBorough)%>%tally()
 #sum(table(xx$PUnbhd)>1)
-dim(PUcount)
-dim(DOcount)
-dim(PUfpd)
-dim(DOfpd)
-head(PUcount)
-head(PUfpd)
+#dim(PUcount)
+#dim(DOcount)
+#dim(PUfpd)
+#dim(DOfpd)
+dim(PU)
+dim(DO)
+head(PU)
+head(DO)
+dim<-rbind(a_raw,b_filter,c_nbhd_naomit,d_final)
+#ex=DO%>%filter(DOnbhd=='Upper West Side')
+#ex%>%mutate(fpd=totalfare/totaldist)
 ```
 
+
+
 ```{r}
-save(PUcount, DOcount, PUfpd, DOfpd, file = "taxi9example.RData")
+save(PU, DO, dim, file = "update_taxi9example.RData")
 ```
 
 
