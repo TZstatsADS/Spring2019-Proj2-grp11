@@ -20,7 +20,7 @@ a <- navbarPage("My Application",
                                            sliderInput("hour", "Hours of Day:", label = "Choose the time of the day:",
                                                                    min = 0, max = 23, value = 8, step=1),
                                            
-                                           checkboxInput("pickup", "Pick-ups", FALSE),
+                                           checkboxInput("pickup", "Pick-ups", TRUE),
                                            checkboxInput("dropoff", "Drop-offs", FALSE)
                                
 
