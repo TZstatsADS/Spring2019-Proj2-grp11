@@ -76,7 +76,7 @@ shinyServer(function(input, output) {
         setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
         addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
-                   color = "black",stroke = TRUE,fillOpacity = 0.5)
+                   color = "grey",stroke = TRUE,fillOpacity = 0.5)
       return (map)
     }
     
@@ -85,7 +85,7 @@ shinyServer(function(input, output) {
        map<-leaflet(t)%>% addTiles() %>%
         setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
-        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
+        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/8)*100,
                    color = "yellow",stroke = TRUE,fillOpacity = 0.5)
       return (map)
     }
