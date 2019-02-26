@@ -6,19 +6,20 @@ output: html_notebook
 ```{r}
 library(sp)
 library(dplyr)
-#setwd("../")
-load('/Users/yeyejiang/Documents/GitHub/Spring2019-Proj2-grp11/output/nyc_nbhd.RData')
-taxi1<-read.csv('/Users/yeyejiang/Desktop/taxi2016_1.csv')
-taxi2<-read.csv('/Users/yeyejiang/Desktop/taxi2016_2.csv')
+setwd("../")
+getwd()
+```
+
+```{r}
+load('../output/nyc_nbhd.RData')
+taxi1<-read.csv('../output/taxi2016_1.csv')
+taxi2<-read.csv('../output/taxi2016_2.csv')
+weather<-read.csv('../data/weather_small.csv',as.is=TRUE)
 #nyc_neighborhoods
 ```
 
 ```{r}
 #head(taxi1)
-```
-
-```{r}
-#head(taxi2)
 ```
 
 ```{r}
@@ -52,18 +53,25 @@ updatetaxi2<-cbind(taxi2,pickupnbhd2,dropoffnbhd2)
 taxidata<-rbind(updatetaxi1,updatetaxi2)
 ```
 
+
 ```{r}
-setwd("../")
-save(taxidata, file = "output/taxidata.RData")
+#add columns
+taxidata<-taxidata%>%mutate(pu_date=substring(tpep_pickup_datetime,1,10),do_date=substring(tpep_dropoff_datetime,1,10))
+taxidatatemp<-taxidata%>%mutate(pu_wl=if_else(PU.Borough %in% c('Manhattan', 'Bronx', 'Unknown'), 'NY CITY CENTRAL PARK, NY US',
+                             if_else(PU.Borough %in% c('Brooklyn','Queens'), 'LA GUARDIA AIRPORT, NY US','WOODBRIDGE TWP 1.1 ESE, NJ US')))
+taxidatatemp<-taxidatatemp%>%mutate(do_wl=if_else(DO.Borough %in% c('Manhattan', 'Bronx', 'Unknown'), 'NY CITY CENTRAL PARK, NY US',
+                             if_else(DO.Borough %in% c('Brooklyn','Queens'), 'LA GUARDIA AIRPORT, NY US','WOODBRIDGE TWP 1.1 ESE, NJ US')))
+
+#left join weather data
+pu_weather<-taxidatatemp%>%left_join(weather,by=c('pu_date'='DATE','pu_wl'='NAME'))%>%select(BAD_WEATHER)
+colnames(pu_weather)<-'pu_weather'
+do_weather<-taxidatatemp%>%left_join(weather,by=c('do_date'='DATE','do_wl'='NAME'))%>%select(BAD_WEATHER)
+colnames(do_weather)<-'do_weather'
+taxi<-cbind(taxidata,pu_weather,do_weather)
 ```
 
-
-
-
-pickupnbhd1%>%dim()
-pickupnbhd2%>%dim()
-dropoffnbhd1%>%dim()
-dropoffnbhd2%>%dim()
-
-
+```{r}
+save(taxi, file = "/Users/yeyejiang/Desktop/taxidata.RData")
+#save(taxi, file = "..output/taxidata.RData")
+```
 

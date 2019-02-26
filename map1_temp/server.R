@@ -26,7 +26,7 @@ library(readr)
 
 
 
-setwd("/Users/yeyejiang/Documents/GitHub/Spring2019-Proj2-grp11/output")
+setwd("../output")
 load('nyc_nbhd.RData')
 load('taxidata.RData')
 taxi<-taxidata%>%na.omit()
