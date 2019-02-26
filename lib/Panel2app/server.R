@@ -26,7 +26,7 @@ library(dplyr)
 library(data.table)
 library(tidyverse)
 
-setwd("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/output")
+setwd("/Users/liweizhang/Downloads/Spring2019-Proj2-grp11-Xinyi-Hu-Taylor/output")
 ################ Read Uber data
 #urlfile<-'https://raw.githubusercontent.com/TZstatsADS/Spring2019-Proj2-grp11/Xinyi-Hu-Taylor/output/ubercount_byhour_id.csv?token=Aszf_-jlp1f0_087w7JKP7v8ir3xkvQWks5ceqqKwA%3D%3D'
 #ubercount_byhour_id<-read_csv(urlfile)
@@ -76,7 +76,7 @@ shinyServer(function(input, output) {
         setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
         addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
-                   color = "grey",stroke = TRUE,fillOpacity = 0.5)
+                   color = "gray",stroke = TRUE,fillOpacity = 0.5)
       return (map)
     }
     
@@ -85,18 +85,24 @@ shinyServer(function(input, output) {
        map<-leaflet(t)%>% addTiles() %>%
         setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
-        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/8)*100,
+        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
                    color = "yellow",stroke = TRUE,fillOpacity = 0.5)
       return (map)
     }
     
     else {
-      t <- filter(both_byhour_id, groups_byhour==date_time)
+      #t <- filter(both_byhour_id, groups_byhour==date_time)
+      t1 <- filter(ubercount_byhour_id, groups_byhour==date_time)
+      t2 <- filter(taxicount_byhour_id, groups_byhour==date_time)
       map<-leaflet(t)%>% addTiles() %>%
         setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
-        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
-                   color = "blue",stroke = TRUE,fillOpacity = 0.5)
+        #addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
+        #           color = "blue",stroke = TRUE,fillOpacity = 0.5)
+        addCircles(lng=t1$mean_long,lat=t1$mean_lat,weight = 5,radius = t1$Count_byhour^(1/4)*200,
+                   color = "gray",stroke = TRUE,fillOpacity = 0.5) %>%
+        addCircles(lng=t2$mean_long,lat=t2$mean_lat,weight = 5,radius = t2$Count_byhour^(1/4)*200,
+                 color = "yellow",stroke = TRUE,fillOpacity = 0.5)
       return (map)
       
       }
