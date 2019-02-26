@@ -1,0 +1,302 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r set up}
+setwd("~/Desktop/GR5243 Applied Data Science/Project 2/Spring2019-Proj2-grp11/data")
+library(data.table)
+library(tibble)
+library(dplyr)
+library(bit64)
+library(tidyverse)
+library(stringr)
+library(stringi)
+taxiGeo = read_csv("../output/TaxiGeo.csv")
+taxiGeo = taxiGeo[,c(1,5,6)]
+```
+
+```{r xaa done}
+xaa = fread("xaa.csv")
+
+###################### Date 03/17/2016 11:40:15 PM ###################### 
+pu.xaa = xaa$tpep_pickup_datetime
+do.xaa= xaa$tpep_dropoff_datetime
+pu.xaa.DateTime = format(strptime(pu.xaa, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+do.xaa.DateTime = format(strptime(do.xaa, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+xaa[,1] = pu.xaa.DateTime
+xaa[,2] = do.xaa.DateTime
+head(xaa,3)
+
+###################### Location ID ###################### 
+length(which(is.na(xaa$PULocationID)))
+length(which(is.na(xaa$pickup_longitude)))
+length(which(is.na(xaa$dropoff_longitude)))
+nrow(xaa)
+##################### no need to clean Location ID
+write_csv(xaa[,-c(9,10)], path = "../output/xaa.csv")
+```
+
+```{r xab done}
+xab = fread("xab.csv")
+###################### Date 03/17/2016 11:40:15 PM ###################### 
+pu.xab = xab$tpep_pickup_datetime
+do.xab = xab$tpep_dropoff_datetime
+pu.xab.DateTime = format(strptime(pu.xab, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+do.xab.DateTime = format(strptime(do.xab, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+xab[,1] = pu.xab.DateTime
+xab[,2] = do.xab.DateTime
+head(xab,3)
+
+###################### Location ID ###################### 
+length(which(is.na(xab$PULocationID)))
+length(which(is.na(xab$pickup_longitude)))
+length(which(is.na(xab$dropoff_longitude)))
+nrow(xab)
+##################### no need to clean Location ID
+write_csv(xab[,-c(9,10)], path = "../output/xab.csv")
+```
+
+```{r xac done}
+xac = fread("xac.csv")
+###################### Date 03/17/2016 11:40:15 PM ###################### 
+pu.xac = xac$tpep_pickup_datetime
+do.xac = xac$tpep_dropoff_datetime
+pu.xac.DateTime = format(strptime(pu.xac, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+do.xac.DateTime = format(strptime(do.xac, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+xac[,1] = pu.xac.DateTime
+xac[,2] = do.xac.DateTime
+head(xac,3)
+
+###################### Location ID ###################### 
+length(which(is.na(xac$PULocationID)))
+length(which(is.na(xac$pickup_longitude)))
+length(which(is.na(xac$dropoff_longitude)))
+nrow(xac)
+##################### no need to clean Location ID
+write_csv(xac[,-c(9,10)], path = "../output/xac.csv")
+```
+
+```{r xad done}
+xad = fread("xad.csv")
+###################### Date 03/17/2016 11:40:15 PM ###################### 
+pu.xad = xad$tpep_pickup_datetime
+do.xad = xad$tpep_dropoff_datetime
+pu.xad.DateTime = format(strptime(pu.xad, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+do.xad.DateTime = format(strptime(do.xad, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+xad[,1] = pu.xad.DateTime
+xad[,2] = do.xad.DateTime 
+head(xad,3)
+
+###################### Location ID ###################### 
+length(which(is.na(xad$PULocationID)))
+length(which(is.na(xad$pickup_longitude)))
+length(which(is.na(xad$dropoff_longitude)))
+nrow(xad)
+##################### no need to clean Location ID
+write_csv(xad[,-c(9,10)], path = "../output/xad.csv")
+
+```
+
+```{r xae ID done}
+xae = fread("xae.csv")
+###################### Date 03/17/2016 11:40:15 PM ###################### 
+pu.xae = xae$tpep_pickup_datetime
+do.xae = xae$tpep_dropoff_datetime
+pu.xae.DateTime = format(strptime(pu.xae, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+do.xae.DateTime = format(strptime(do.xae, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+xae[,1] = pu.xae.DateTime
+xae[,2] = do.xae.DateTime
+head(xae,3)
+
+###################### Location ID ###################### 
+length(which(is.na(xae$PULocationID)))   # has geo
+length(which(is.na(xae$pickup_longitude))) # has ID
+nrow(xae)
+##################### Need to clean Location ID
+
+ID.index.e = which(is.na(xae$pickup_longitude))
+ID.e = as.data.frame(xae[ID.index.e,c(9,10)])
+#ID.e = as.data.frame(ID.e)[,c(9,10)]
+
+colnames(taxiGeo)[1] = "PULocationID"
+ID.e = inner_join(ID.e, taxiGeo, by = "PULocationID")
+colnames(ID.e)[3] = "PU.mean_long"
+colnames(ID.e)[4] = "PU.mean_lat"
+
+colnames(taxiGeo)[1] = "DOLocationID"
+ID.e = inner_join(ID.e, taxiGeo, by = "DOLocationID")
+colnames(ID.e)[5] = "DO.mean_long"
+colnames(ID.e)[6] = "DO.mean_lat"
+colnames(ID.e)
+
+xae[ID.index.e,"pickup_longitude"] = ID.e$PU.mean_long
+xae[ID.index.e,"pickup_latitude"] = ID.e$PU.mean_lat
+xae[ID.index.e,"dropoff_longitude"] = ID.e$DO.mean_long
+xae[ID.index.e,"dropoff_latitude"] = ID.e$DO.mean_lat
+
+Map.e = bind_cols(xae[ID.index.e,1], ID.e[,c(1,3,4)])
+colnames(Map.e) = c("groups_byhour","LocationID","mean_long","mean_lat")
+
+write_csv(xae[,-c(9,10)], path = "../output/xae.csv")
+write_csv(Map.e, path = "../output/Map_e.csv")
+head(xae,5)
+```
+
+```{r xaf ID done}
+xaf = fread("xaf.csv")
+###################### Date 03/17/2016 11:40:15 PM ###################### 
+pu.xaf = xaf$tpep_pickup_datetime
+do.xaf = xaf$tpep_dropoff_datetime
+pu.xaf.DateTime = format(strptime(pu.xaf, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+do.xaf.DateTime = format(strptime(do.xaf, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+xaf[,1] = pu.xaf.DateTime
+xaf[,2] = do.xaf.DateTime
+head(xaf,3)
+
+###################### Location ID ###################### 
+length(which(is.na(xaf$PULocationID)))
+length(which(is.na(xaf$pickup_longitude)))
+nrow(xaf)
+##################### Need to clean Location ID
+
+ID.f = as.data.frame(xaf[,c(9,10)])
+#ID.e = as.data.frame(ID.e)[,c(9,10)]
+
+colnames(taxiGeo)[1] = "PULocationID"
+ID.f = inner_join(ID.f, taxiGeo, by = "PULocationID")
+colnames(ID.f)[3] = "PU.mean_long"
+colnames(ID.f)[4] = "PU.mean_lat"
+
+colnames(taxiGeo)[1] = "DOLocationID"
+ID.f = inner_join(ID.f, taxiGeo, by = "DOLocationID")
+colnames(ID.f)[5] = "DO.mean_long"
+colnames(ID.f)[6] = "DO.mean_lat"
+colnames(ID.f)
+
+xaf[,"pickup_longitude"] = ID.f$PU.mean_long
+xaf[,"pickup_latitude"] = ID.f$PU.mean_lat
+xaf[,"dropoff_longitude"] = ID.f$DO.mean_long
+xaf[,"dropoff_latitude"] = ID.f$DO.mean_lat
+
+Map.f = bind_cols(xaf[,1], ID.f[,c(1,3,4)])
+colnames(Map.f) = c("groups_byhour","LocationID","mean_long","mean_lat")
+
+write_csv(xaf[,-c(9,10)], path = "../output/xaf.csv")
+write_csv(Map.f, path = "../output/Map_f.csv")
+head(xaf,5)
+head(Map.f)
+
+```
+
+```{r xag ID done}
+xag = fread("xag.csv")
+###################### Date 03/17/2016 11:40:15 PM ###################### 
+pu.xag = xag$tpep_pickup_datetime
+do.xag = xag$tpep_dropoff_datetime
+pu.xag.DateTime = format(strptime(pu.xag, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+do.xag.DateTime = format(strptime(do.xag, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+xag[,1] = pu.xag.DateTime
+xag[,2] = do.xag.DateTime
+head(xag,3)
+
+###################### Location ID ###################### 
+length(which(is.na(xag$PULocationID)))
+length(which(is.na(xag$pickup_longitude)))
+length(which(is.na(xag$dropoff_longitude)))
+nrow(xag)
+##################### Need to clean Location ID
+
+ID.index.g = which(is.na(xag$pickup_longitude))
+ID.g = as.data.frame(xag[ID.index.g,c(9,10)])
+#ID.e = as.data.frame(ID.e)[,c(9,10)]
+
+colnames(taxiGeo)[1] = "PULocationID"
+ID.g = inner_join(ID.g, taxiGeo, by = "PULocationID")
+colnames(ID.g)[3] = "PU.mean_long"
+colnames(ID.g)[4] = "PU.mean_lat"
+
+colnames(taxiGeo)[1] = "DOLocationID"
+ID.g = inner_join(ID.g, taxiGeo, by = "DOLocationID")
+colnames(ID.g)[5] = "DO.mean_long"
+colnames(ID.g)[6] = "DO.mean_lat"
+colnames(ID.g)
+
+xag[ID.index.g,"pickup_longitude"] = ID.g$PU.mean_long
+xag[ID.index.g,"pickup_latitude"] = ID.g$PU.mean_lat
+xag[ID.index.g,"dropoff_longitude"] = ID.g$DO.mean_long
+xag[ID.index.g,"dropoff_latitude"] = ID.g$DO.mean_lat
+
+Map.g = bind_cols(xag[ID.index.g,1], ID.g[,c(1,3,4)])
+colnames(Map.g) = c("groups_byhour","LocationID","mean_long","mean_lat")
+
+write_csv(xag[,-c(9,10)], path = "../output/xag.csv")
+write_csv(Map.g, path = "../output/Map_g.csv")
+head(xag,5)
+head(Map.g,5)
+
+
+
+
+```
+
+```{r xah done}
+xah = fread("xah.csv")
+###################### Date 03/17/2016 11:40:15 PM ###################### 
+pu.xah = xah$tpep_pickup_datetime
+do.xah = xah$tpep_dropoff_datetime
+pu.xah.DateTime = format(strptime(pu.xah, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+do.xah.DateTime = format(strptime(do.xah, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+xah[,1] = pu.xah.DateTime
+xah[,2] = do.xah.DateTime
+head(xah,3)
+
+###################### Location ID ###################### 
+length(which(is.na(xah$PULocationID)))
+length(which(is.na(xah$pickup_longitude)))
+length(which(is.na(xah$dropoff_longitude)))
+nrow(xah)
+##################### no need to clean Location ID
+write_csv(xah[,-c(9,10)], path = "../output/xah.csv")
+
+```
+
+```{r xai done}
+xai = fread("xai.csv")
+###################### Date 03/17/2016 11:40:15 PM ###################### 
+pu.xai = xai$tpep_pickup_datetime
+do.xai = xai$tpep_dropoff_datetime
+pu.xai.DateTime = format(strptime(pu.xai, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+do.xai.DateTime = format(strptime(do.xai, format='%m/%d/%Y %I:%M:%S %p'),
+                         format="%Y-%m-%d %H:00:00")
+xai[,1] = pu.xai.DateTime
+xai[,2] = do.xai.DateTime
+head(xai,3)
+
+###################### Location ID ###################### 
+length(which(is.na(xai$PULocationID)))
+length(which(is.na(xai$pickup_longitude)))
+length(which(is.na(xai$dropoff_longitude)))
+nrow(xai)
+##################### no need to clean Location ID
+write_csv(xai[,-c(9,10)], path = "../output/xai.csv")
+```
+
+
