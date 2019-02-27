@@ -45,7 +45,7 @@ pred=function(y){
   value=predict(lo, data.frame(c(1:24)), se = TRUE)$fit
   value
 }
-(predtable=apply(drtb,1,'pred'))
+predtable=apply(drtb,1,'pred')
 ```
 
 
@@ -77,20 +77,36 @@ define
 ```{r}
 nbhd<-rownames(tttbbb)
 xx=c(1:254)
+# for (i in 1:254){
+#   xx[i]=if_else(sum(peak[[i]] %in% c(14:16)) ==1, 'Attractions',
+#                 if_else(sum(peak[[i]] %in% c(7:13), peak[[i]] %in% c(17:20)) ==2, 'Work Area',
+#                         if_else(sum(peak[[i]] %in% c(21:23)) ==1, 'Entertainment', 
+#                                'Else'
+#                                #  if_else((apply(predtable,2,which.max) %in% c(21:24,1))=='TRUE','Residential Area', 'Else'
+#                                 #         )
+#                                  )
+#                          )
+#                 )
+# }
+
+
 for (i in 1:254){
-  xx[i]=if_else(sum(peak[[i]] %in% c(14:16)) ==1, 'Attractions',
-                if_else(length(peak[[i]])==2, 'Work Area', 
-                         if_else(sum(peak[[i]] %in% c(21:23)) ==1, 'Entertainment', 'Else'
+  xx[i]=if_else(sum(peak[[i]] %in% c(7:10)) ==1, 'Work Area',
+                if_else(sum(peak[[i]] %in% c(14:16)) ==1, 'Attractions',
+                        if_else(sum(peak[[i]] %in% c(21:23)) ==1, 'Entertainment', 
+                               'Else'
                                #  if_else((apply(predtable,2,which.max) %in% c(21:24,1))=='TRUE','Residential Area', 'Else'
                                 #         )
                                  )
                          )
                 )
 }
+
+
 tempt<-data.frame(cbind(nbhd,xx))
 tempt$xx<-as.character(tempt$xx)
 
-if_res<-apply(predtable,2,which.max) %in% c(21:24,1)
+if_res<-apply(predtable,2,which.max) %in% c(21:24,1,2)
 if_els<-tempt$xx=='Else'
 
 
@@ -102,10 +118,18 @@ tempt<-tempt%>%mutate('index'= if_else(xx=='Attractions',5,
                                       if_else(xx=='Residential Area',3,
                                               if_else(xx=='Work Area', 4,1)
                                       ))))
+tempt%>%filter(xx=='Work Area')
 ```
 
 ```{r}
-save(tempt,file ='/Users/yeyejiang/Desktop/cluster.RData')
+table(tempt$xx)
+tempt%>%filter(nbhd=='East Village')
+```
+
+
+
+```{r}
+save(tempt,file ='/Users/yeyejiang/Desktop/cluster1.RData')
 ```
 
 
