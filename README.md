@@ -71,7 +71,7 @@ The third map shows airport traffic depending on where and when someone is picke
 
 Panel 1(traffic map):
 
-Panel 2(time flow map): Liwei Zhang queried, cleaned Uber data. Liwei Zhang wrote the background and insight. Xinyi Hu queried, cleaned yellow taxi data of year 2016 and updated yellow taxi data of year 2015. We built the panel 2 together. Xinyi Hu integrated all three panels.
+Panel 2(time flow map): Liwei Zhang queried, cleaned Uber data. Xinyi Hu queried, cleaned yellow taxi data of year 2016 and updated yellow taxi data of year 2015. We built the panel 2 together. Xinyi Hu integrated all three panels.
 
 Panel 3(airport traffic map): NL queried, cleaned the data and built the tab for the shiny app. Xinyi Hu integrated it into the rest of the app.
 
