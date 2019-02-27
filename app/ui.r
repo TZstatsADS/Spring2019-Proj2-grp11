@@ -2,7 +2,7 @@ library(ggplot2)
 library(leaflet)
 library(shiny)
 
-setwd("~/Desktop/MASTER/output")
+setwd("../output")
 
 vars <- c(
   "Business Day" = 1,
@@ -43,7 +43,7 @@ navbarPage("NYC Traffic",id='map1',
                                       width = 160, height = 120,
                                       
                                       radioButtons("CF", label = "Layers",
-                                                   choices = list("Count" = "count", "Fare Per Distance" = "FPD","Cluster" = "Cluster"), 
+                                                   choices = list("Count" = "count", "Fare Per Distance" = "FPD","Category" = "Cluster"), 
                                                    selected = "count")
                                    
                         )
@@ -117,8 +117,8 @@ navbarPage("NYC Traffic",id='map1',
                                       width = 160, height = 180,
                                       
                                       radioButtons("CF.2", label = "Layers",
-                                                   choices = list("Count Number" = "count.2", "Fare Per Distance" = "FPD.2", "Cash Paying Percentage" = "cash"), 
-                                                   selected = "count.2")
+                                                   choices = list("Fare Per Distance" = "FPD.2", "Count Number" = "count.2", "Cash Paying Percentage" = "cash"), 
+                                                   selected = "FPD.2")
                                       
                                       
                         ),

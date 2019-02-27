@@ -1,4 +1,4 @@
-setwd("~/Desktop/MASTER/output")
+setwd("../output")
 
 library(shiny)
 library(ggplot2)
@@ -14,7 +14,7 @@ library(httr)
 library(rgdal)
 library(readr)
 library(ggpubr)
-
+library(data.table)
 
 
 
@@ -152,10 +152,10 @@ shinyServer(function(input, output, session) {
     popup2 = paste0('<strong>Neighborhood: </strong><br>', FPD_map_data@data$neighborhood, 
                     '<br><strong>Fair Per Distance: </strong><br>', FPD_map_data@data$FPD)
     
-    palc = colorFactor(color[[3]], 1:5)
+    palc = colorFactor(c("#B0A8B9","#C34A36","#D7EBE5","#FF8066","#845EC2"), 1:5)
     
     popupc = paste0('<strong>Neighborhood: </strong><br>', cluster_map_data@data$neighborhood, 
-                    '<br><strong>Fair Per Distance: </strong><br>', cluster_map_data@data$xx)
+                    '<br><strong>Category: </strong><br>', cluster_map_data@data$xx)
     
     
     pic1 <- leaflet(map_data) %>%
@@ -195,12 +195,12 @@ shinyServer(function(input, output, session) {
     else if(input$CF=="Cluster"){
       picC <- leaflet(cluster_map_data) %>%
         addTiles() %>% 
-        addPolygons(fillColor = ~palc(index), popup = popupc, color = 'grey', weight = 1,fillOpacity = .6) %>% 
+        addPolygons(fillColor = ~palc(index), popup = popupc, color = 'grey', weight = 1,fillOpacity = .7) %>% 
         addLegend(position = "bottomright",
-                  colors = color[[3]],
-                  labels = label[[3]],
+                  colors = c("#B0A8B9","#C34A36","#D7EBE5","#FF8066","#845EC2"),
+                  labels = c("Else","Entertaiment","Residential Area","Work Area","Attraction"),
                   opacity = 0.6,
-                  title = title[[3]]) %>%
+                  title = "Category") %>%
         addProviderTiles("CartoDB.Positron") %>%
         setView(-73.98, 40.75, zoom = 10)
     }
@@ -256,14 +256,14 @@ shinyServer(function(input, output, session) {
     })
     table_1 <- Sunnycount2%>%filter(DOnbhd==match1$nbhd) %>% group_by(DOnbhd) %>%
       mutate(TotalCount=sum(totalcount),Cluster=tempt$xx[as.character(tempt$nbhd)==match1$nbhd])
-    names(table_1) <- c("Name","Hour","count","TotalCount","Cluster")
+    names(table_1) <- c("Name","Hour","count","TotalCount","Category")
     output$table1 <- renderTable(
       unique(table_1[,c(1,4,5)])
     )
     
     table_2 <- Badcount2%>%filter(DOnbhd==match1$nbhd) %>% group_by(DOnbhd) %>%
       mutate(TotalCount=sum(totalcount),Cluster=tempt$xx[as.character(tempt$nbhd)==match1$nbhd])
-    names(table_2) <- c("Name","Hour","count","TotalCount","Cluster")
+    names(table_2) <- c("Name","Hour","count","TotalCount","Category")
     output$table2 <- renderTable(
       unique(table_2[,c(1,4,5)])
     )
@@ -318,9 +318,9 @@ shinyServer(function(input, output, session) {
   # THIS IS LEAFLET FOR DYNAMIC MAP
   
   output$map2 <- renderLeaflet({
-    leaflet() %>%
+    picAirport <- leaflet() %>%
       setView(lat=40.75, lng=-73.98, zoom=11) %>%
-      addProviderTiles('CartoDB.Positron') 
+      addProviderTiles('Stamen.Toner') 
   })
   
   drawvalue <- reactive({
@@ -391,7 +391,7 @@ shinyServer(function(input, output, session) {
     # print leaflet
     pal = colorBin(color[[1]], bins = bin[[1]])
     pal_FPD = colorBin(color[[2]], bins = bin[[2]])
-    pal2 = colorBin(c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C"), 1:10)
+    pal2 = colorBin(c("#C2EEAA","#A2D78F","#83C074","#64A959","#44923E","#257B23","#066508"), 1:7)
     pal3 = colorBin(c("#005A32", "#74C476", "#F7FCF5"), 0:0.125:1)
     
     popup1 = paste0('<strong>Neighborhood: </strong><br>', subdat_data$NTAName, 
@@ -403,15 +403,15 @@ shinyServer(function(input, output, session) {
                     '<br><strong>Percentage Paying Cash: </strong><br>', payper$PercentagePaying)
     
     
-    pic1<-leaflet(subdat) %>%
+    picAirport<-leaflet(subdat) %>%
       setView(lat=40.75, lng=-73.98, zoom=10) %>%
-      addProviderTiles('CartoDB.Positron') 
+      addProviderTiles('Stamen.Toner') 
     
     # IF VALUE SELECTED WAS COUNT
     if (input$CF.2 == "count.2"){
-      pic1<-pic1 %>%
+      picAirport<-picAirport %>%
         addPolygons(fillColor = ~pal(count), color = 'grey', weight = 1, 
-                    popup = popup1, fillOpacity = .6, group = group1) %>%
+                    popup = popup1, fillOpacity = .9, group = group1) %>%
         addLegend(position = "bottomright",
                   colors = color[[1]],
                   labels = label[[1]],
@@ -421,11 +421,11 @@ shinyServer(function(input, output, session) {
     
     # IF VALUE SELECTED WAS FPD
     else if (input$CF.2 == "FPD.2"){
-      pic1<-pic1 %>%
-        addPolygons(fillColor = ~pal_FPD(FPD), color = 'grey', weight = 1, 
-                    popup = popup2, fillOpacity = .6, group = group2) %>%
+      picAirport<-picAirport %>%
+        addPolygons(fillColor = ~pal2(FPD), color = 'grey', weight = 1, 
+                    popup = popup2, fillOpacity = .9, group = group2) %>%
         addLegend(position = 'bottomright',
-                  colors = color[[2]],
+                  colors = c("#C2EEAA","#A2D78F","#83C074","#64A959","#44923E","#257B23","#066508"),
                   labels = label[[2]], ## legend labels (only min and max)
                   opacity = 0.6,      ##transparency again
                   title = title[[2]])
@@ -433,9 +433,9 @@ shinyServer(function(input, output, session) {
     
     
     else if (input$CF.2 == "cash"){
-      pic1<-pic1 %>%
+      picAirport<-picAirport %>%
         addPolygons(fillColor =  ~pal3(payper$PercentagePayingCash), color = 'grey', weight = 1, 
-                    popup = popup4, fillOpacity = .6, group = group3) %>%
+                    popup = popup4, fillOpacity = .9, group = group3) %>%
         addLegend(position = 'bottomright',
                   colors = color[[3]],
                   labels = label[[3]], ## legend labels (only min and max)
