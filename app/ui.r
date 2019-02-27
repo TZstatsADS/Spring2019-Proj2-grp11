@@ -1,12 +1,12 @@
 library(leaflet)
-
+library(shiny)
 #Choices for drop-downs
 vars <- c(
   "Business Day" = 1,
   "Not Business Day" = 2
 
 )
-#
+
 
 navbarPage("NYC TAXI", id="nav", 
            #title = 'taxi menu',

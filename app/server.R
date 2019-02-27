@@ -25,7 +25,6 @@ library(readr)
 
 #setwd("~Documents/GitHub/Spring2019-Proj2-grp11/")
 setwd("../")
-
 # set group based on radio selection
 group1 = "<span style='color: #7f0000; font-size: 11pt'><strong>count</strong></span>"
 group2 = "<span style='color: #7f0000; font-size: 11pt'><strong>FPD</strong></span>"
