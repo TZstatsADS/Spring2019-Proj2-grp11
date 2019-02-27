@@ -111,27 +111,27 @@ save(tempt,file ='/Users/yeyejiang/Desktop/cluster.RData')
 
 
 ```{r}
+
+
+
+# #color = list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
+# #            color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'))
+# #pal2 <- colorBin(color[[1]], bins=c(1:5))
+# pal<- colorBin(c('red','blue','green','purple', 'grey'), bins=c(1:5))
+# pal1 <- colorBin(color[[2]], bins=c(1:5))
+# pal2 = colorBin(c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C"), 1:10)
+# color = list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
+#              color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
+#              color3 = c("#F7FCF5","#74C476", "#005A32"))
+# label = list(label1 = c("<100","100-1000","1000~10,000","10,000~100,000","100,000~1,000,000","1,000,000~10,000,000"),
+#              label2 = c("0-1","2-3","3-4","4-5","5-6","6","7+"),
+#              label3 = c("<0.4","0.4~0.6",">0.6"))
 map_data <- geo_join(nyc_nbhd, tempt, "neighborhood", "nbhd")
-
-
-#color = list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
-#            color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'))
-#pal2 <- colorBin(color[[1]], bins=c(1:5))
-pal<- colorBin(c('red','blue','green','purple', 'grey'), bins=c(1:5))
-pal1 <- colorBin(color[[2]], bins=c(1:5))
-pal2 = colorBin(c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C"), 1:10)
-color = list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
-             color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
-             color3 = c("#F7FCF5","#74C476", "#005A32"))
-label = list(label1 = c("<100","100-1000","1000~10,000","10,000~100,000","100,000~1,000,000","1,000,000~10,000,000"),
-             label2 = c("0-1","2-3","3-4","4-5","5-6","6","7+"),
-             label3 = c("<0.4","0.4~0.6",">0.6"))
 
 leaflet(map_data) %>%
   addTiles() %>% 
   addPolygons(fillColor = ~pal2(index), popup = ~neighborhood, color = 'grey', weight = 1) %>% 
   addProviderTiles("CartoDB.Positron") %>%
-  #addLegend(position = 'bottomright',title = map_data$nbhd,colors = color[[3]], )%>%
   setView(-73.98, 40.75, zoom = 13)
 ```
 

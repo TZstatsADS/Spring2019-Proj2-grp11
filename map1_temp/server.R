@@ -16,16 +16,19 @@ library(readr)
 
 
 color = list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
-            color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'))
+            color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
+            color3 = c("#882E72", "#B178A6", "#D6C1DE", "#7BAFDE", "#4EB265"))
 label = list(label1 = c("<100","100-1000","1000~10,000","10,000~100,000","100,000~1,000,000","1,000,000~10,000,000"),
-             label2 = c("0-1","2-3","3-4","4-5","5-6","6-7","7+"))
-title = list(t1 = "Pick Up Numbers", t2 = "Fair Per Distance")
+             label2 = c("0-1","2-3","3-4","4-5","5-6","6-7","7+"),
+             label3 = c("Else","Entertainment","Residential Area","Work Area","Attractions"))
+title = list(t1 = "Pick Up Numbers", t2 = "Fair Per Distance",t3="Neighborhood Cluster")
 
 
 load('PU_data.RData')
 load('DO_data.RData')
 setwd("../output")
 load('nyc_nbhd.RData')
+load('cluster.RData')
 
 shinyServer(function(input, output,session) {
   
@@ -69,7 +72,7 @@ shinyServer(function(input, output,session) {
     }
     
     
-    
+    cluster_map_data <- geo_join(nyc_nbhd, tempt, "neighborhood", "nbhd")
     
     
     pal2 <- colorBin(color[[1]], bins=c(0,100,1000,10000,100000,1000000,10000000))
@@ -81,6 +84,12 @@ shinyServer(function(input, output,session) {
     popup2 = paste0('<strong>Neighborhood: </strong><br>', FPD_map_data@data$neighborhood, 
                     '<br><strong>Fair Per Distance: </strong><br>', FPD_map_data@data$FPD)
     
+    palc = colorBin(color[[3]], 1:5)
+    
+    popupc = paste0('<strong>Neighborhood: </strong><br>', cluster_map_data@data$neighborhood, 
+                    '<br><strong>Fair Per Distance: </strong><br>', cluster_map_data@data$xx)
+    
+    
     pic1 <- leaflet(map_data) %>%
       setView(-73.98, 40.75, zoom = 10) %>%
       addProviderTiles("CartoDB.Positron")
@@ -88,6 +97,10 @@ shinyServer(function(input, output,session) {
     picFPD <- leaflet(FPD_map_data) %>%
       setView(-73.98, 40.75, zoom = 10) %>%
       addProviderTiles("CartoDB.Positron")
+    
+    
+    
+    
     
     if (input$CF == "count"){
       pic1<-pic1 %>%
@@ -109,6 +122,19 @@ shinyServer(function(input, output,session) {
                   labels = label[[2]], ## legend labels (only min and max)
                   opacity = 0.6,      ##transparency again
                   title = title[[2]])
+    }
+    
+    else if(input$CF=="Cluster"){
+      picC <- leaflet(cluster_map_data) %>%
+        addTiles() %>% 
+        addPolygons(fillColor = ~palc(index), popup = popupc, color = 'grey', weight = 1) %>% 
+        addLegend(position = "bottomright",
+                  colors = color[[3]],
+                  labels = label[[3]],
+                  opacity = 0.6,
+                  title = title[[3]]) %>%
+        addProviderTiles("CartoDB.Positron") %>%
+        setView(-73.98, 40.75, zoom = 10)
     }
     
   })
