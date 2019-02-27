@@ -36,10 +36,8 @@ load('cluster.RData')
 ######### Map 2 Data ########
 
 ubercount_byhour_id <- fread("ubercount_byhour_id.csv")
-load("count2016_1.RData")  # dataframe name: count_1
-load("count2016_2.RData")  # dataframe name: count_2
-load("count2016_3.RData")  # dataframe name: count_3
-taxi2016count_byhour_id<-bind_rows(count_1,count_2,count_3)
+load("count2016.RData")  # dataframe name: count_3
+taxi2016count_byhour_id<-count2016
 taxi2015count_byhour_id<-fread("PU15_Update.csv")
 taxicount_byhour_id<-bind_rows(taxi2015count_byhour_id, taxi2016count_byhour_id)
 both_byhour_id<-bind_rows(taxicount_byhour_id,ubercount_byhour_id)
