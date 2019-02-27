@@ -93,7 +93,9 @@ navbarPage("NYC Traffic",id='map1',
                                        sliderInput("time", "Hours of Day:", 
                                                    min = 0, max = 24, value = 0, step = 1,
                                                    animate=animationOptions(interval = 50)),
-                                       helpText("Click play button to see dynamic flow data")
+                                       helpText("Click play button to see dynamic flow data"),
+                                       helpText("Taxi data: 2015 Jan ~ 2015 June; 2016 Jul ~ Dec"),
+                                       helpText("Uber data: 2015 Jan ~ 2015 June")
                                        )
                          
                          ), 
