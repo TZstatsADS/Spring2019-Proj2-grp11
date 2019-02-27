@@ -71,9 +71,13 @@ The third map shows airport traffic depending on where and when someone is picke
 
 Panel 1(traffic map):
 
-Panel 2(time flow map): 
+Panel 2(time flow map): Liwei Zhang queried, cleaned Uber data. Xinyi Hu queried, clean yellow taxi data. We built the panel 2 together. 
 
-Panel 3(airport traffic map): NL queried, cleaned the data and built the tab for the shiny app. Xinyi Hu integrated it into the rest of the app
+Panel 3(airport traffic map): NL queried, cleaned the data and built the tab for the shiny app. Xinyi Hu integrated it into the rest of the app.
+
+Presentation: Liwei Zhang is the presenter.
+
+
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
