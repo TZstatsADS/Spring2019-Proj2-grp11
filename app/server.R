@@ -23,9 +23,8 @@ library(dplyr)
 library(data.table)
 library(readr)
 
-
-#setwd("Documents/GitHub/Spring2019-Proj2-grp11/")
-#setwd("../")
+#setwd("~Documents/GitHub/Spring2019-Proj2-grp11/")
+setwd("../")
 
 # set group based on radio selection
 group1 = "<span style='color: #7f0000; font-size: 11pt'><strong>count</strong></span>"
@@ -67,6 +66,10 @@ rownames(count_result) = subdat@data$NTACode
 # summarized data 
 payper = read.csv("data/Data_frame_of_summary.csv")
 
+#initialize data
+count_result1 <- JFK_count_result
+FPD_result1 <- JFK_FPD_result
+
 #head(subdat@data)
 shinyServer(function(input, output,session) { 
   
@@ -95,18 +98,22 @@ shinyServer(function(input, output,session) {
     
     #OUTPUT CALLED MAP
     output$map <- renderLeaflet({
+    
       
       if (input$airport == "JFK"){
         count_result1 <- JFK_count_result
         FPD_result1 <- JFK_FPD_result
       }
-      else if  (input$airport == "NWK"){
+      else if(input$airport == "NWK"){
         count_result1 <- NWK_count_result
         FPD_result1 <- NWK_FPD_result
       }
-      else{
+      else if(input$airport == "NWK"){
         count_result1 <- LGA_count_result
         FPD_result1 <- LGA_FPD_result
+      }
+      else{
+        print("no airport")
       }
         
       
@@ -154,7 +161,6 @@ shinyServer(function(input, output,session) {
                       '<br><strong>Percentage Paying Cash: </strong><br>', payper$PercentagePaying)
       
       
-
       pic1<-leaflet(subdat) %>%
         setView(lat=40.7128, lng=-74.0059, zoom=10) %>%
         addProviderTiles('CartoDB.Positron') 
@@ -205,7 +211,7 @@ shinyServer(function(input, output,session) {
       if (is.null(event))
         return()
       
-      #print("works")
+      print("works")
       
       #create a data fram for longitude and latitude of click location
       dattest = data.frame(Longitude = event$lng, Latitude = event$lat)
