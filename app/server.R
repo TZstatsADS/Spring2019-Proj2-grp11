@@ -31,7 +31,7 @@ title.1 = list(t1 = "Pick Up Numbers", t2 = "Fair Per Distance",t3="Neighborhood
 load('PU_data.RData')
 load('DO_data.RData')
 load('nyc_nbhd.RData')
-load('cluster.RData')
+load('cluster1.RData')
 
 ######### Map 2 Data ########
 
@@ -232,7 +232,7 @@ shinyServer(function(input, output, session) {
       dfcount_resultSun$FPD <- unlist(SunnyFPD2[SunnyFPD2$DOnbhd==match1$nbhd,]$FPD)
       plot11<- ggplot(data=dfcount_resultSun, aes(x=as.numeric(dropoff_hour), y=totalcount/sum(totalcount),fill=FPD)) +
         geom_bar(stat="identity",alpha=0.85)+
-        geom_smooth(col="#F28123") + xlab("Hours") + ylab("Total DropOff Count")+
+        geom_smooth(col="#F28123") + xlab("Hours") + ylab("Total DropOff Count Percentage")+
         ggtitle("Drop Off Flow Trend in Sunny Days")+ 
         ylim(0,0.1)+ 
         scale_fill_gradient(low="#56B1F7", high="#132B43") 
@@ -241,7 +241,7 @@ shinyServer(function(input, output, session) {
       dfcount_resultBad$FPD <- unlist(BadFPD2[BadFPD2$DOnbhd==match1$nbhd,]$FPD)
       plot22<- ggplot(data=dfcount_resultBad, aes(x=as.numeric(dropoff_hour), y=totalcount/sum(totalcount),fill=FPD)) +
         geom_bar(stat="identity",alpha=0.85)+
-        geom_smooth(col="#F28123") + xlab("Hours") + ylab("Total DropOff Count")+
+        geom_smooth(col="#F28123") + xlab("Hours") + ylab("Total DropOff Count Percentage")+
         ggtitle("Drop Off Flow Trend in Bad Weather Days")+ 
         ylim(0,0.1)+
         scale_fill_gradient(low="#56B1F7", high="#132B43") 
