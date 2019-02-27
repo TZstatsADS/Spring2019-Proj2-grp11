@@ -65,7 +65,7 @@ load('myShape1.RData')
 subdat<-spTransform(myShape1, CRS("+init=epsg:4326"))
 
 # load dynamic data
-dynamicdata = fread("../data/pickupDropoff date_hour.csv", header = TRUE, stringsAsFactors=F)
+dynamicdata = fread("pickupDropoff date_hour.csv", header = TRUE, stringsAsFactors=F)
 
 # load airport traffic data
 load('RSummarized/JFK_count_seperated.RData')
@@ -90,7 +90,7 @@ load('FPD_seperated.RData')
 rownames(count_result) = subdat@data$NTACode
 
 # summarized data 
-payper = read.csv("../data/Data_frame_of_summary.csv")
+payper = read.csv("Data_frame_of_summary.csv")
 
 #initialize data
 count_result1 <- JFK_count_result
