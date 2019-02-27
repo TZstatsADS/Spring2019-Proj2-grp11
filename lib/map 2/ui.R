@@ -5,7 +5,7 @@ navbarPage("NYC TRAFFIC", id="nav",
            
            tabPanel("Time Flow Map",
       
-                    leafletOutput("map", width = "150%", height = 700),
+                    leafletOutput("map2", width = "150%", height = 700),
                 
                     #set panel in the left side
                     absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
