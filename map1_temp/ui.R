@@ -17,8 +17,11 @@ a <- navbarPage("My Application",
                                            selectInput("weather", label = h3("Weather Condition"), 
                                                        choices = list("All Days","Sunny Days", "Bad Weather Days"), selected = "All Days"),
                                            
-                                           sliderInput("hour", "Hours of Day:",  
-                                                                   min = 0, max = 23, value = 8, step=1)
+                                           sliderInput("hour", "Hours of Day:", label = "Choose the time of the day:",
+                                                                   min = 0, max = 23, value = 8, step=1),
+                                           
+                                           checkboxInput("pickup", "Pick-ups", TRUE),
+                                           checkboxInput("dropoff", "Drop-offs", FALSE)
                                
 
                              ),

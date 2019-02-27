@@ -6,35 +6,37 @@ output: html_notebook
 ```{r}
 library(sp)
 library(dplyr)
-setwd("../")
-getwd()
+# setwd("../")
+# getwd()
 ```
 
 ```{r}
-load('../output/nyc_nbhd.RData')
-load('../output/taxidata.RData')
-taxi1<-read.csv('../output/taxi2016_1.csv')
-taxi2<-read.csv('../output/taxi2016_2.csv')
-taxiall <- rbind(taxi1,taxi2)
+load('taxi2016_FinalClean.RData')
+#load('../output/taxidata.RData')
+# taxi1<-read.csv('../output/taxi2016_1.csv')
+# taxi2<-read.csv('../output/taxi2016_2.csv')
+# taxiall <- rbind(taxi1,taxi2)
 #weather<-read.csv('../data/weather_small.csv',as.is=TRUE)
 #nyc_neighborhoods
 ```
 
 ```{r}
-All_FPD <- na.omit(taxi %>% select(PUnbhd,PU.hour,fare_amount,trip_distance, pu_weather)%>%group_by(PU.hour, PUnbhd) %>%
-  mutate(FPD=sum(fare_amount)/sum(trip_distance)) %>% select(PUnbhd,PU.hour,FPD,pu_weather))
+All_FPD <- na.omit(AllFPD <- PU %>% group_by(pickup_hour, PUnbhd) %>% mutate(FPD=sum(totalfare)/sum(totaldist))) %>% select(pickup_hour, PUnbhd,FPD) %>% unique()
 All_FPD
 ```
 
 ```{r}
-Sunny_FPD <- taxi %>% filter(pu_weather==0)%>%select(PUnbhd,PU.hour,fare_amount,trip_distance, pu_weather)%>%group_by(PU.hour, PUnbhd) %>%
-  mutate(FPD=sum(fare_amount)/sum(trip_distance)) %>% select(PUnbhd,PU.hour,FPD,pu_weather)
-Bad_FPD <- taxi %>% filter(pu_weather==1)%>%select(PUnbhd,PU.hour,fare_amount,trip_distance, pu_weather)%>%group_by(PU.hour, PUnbhd) %>%
-  mutate(FPD=sum(fare_amount)/sum(trip_distance)) %>% select(PUnbhd,PU.hour,FPD,pu_weather)
+SunnyFPD <- PU %>% filter(pu_bad_weather==0)%>%
+  group_by(pickup_hour, PUnbhd) %>%
+  mutate(FPD=sum(totalfare)/sum(totaldist))%>% 
+  select(pickup_hour, PUnbhd,FPD) %>% unique()
 ```
 
 ```{r}
-
+BadFPD <- PU %>% filter(pu_bad_weather==1)%>%
+  group_by(pickup_hour, PUnbhd) %>%
+  mutate(FPD=sum(totalfare)/sum(totaldist))%>% 
+  select(pickup_hour, PUnbhd,FPD) %>% unique()
 ```
 
 
@@ -49,30 +51,72 @@ add_level <- function(df){
                                                                       ifelse(FPD>=6 & FPD < 7,6,7))))))))
   return(A)
 }
-FPD_map <- add_level(All_FPD)
-Sunny_FPD_map <- add_level(Sunny_FPD)
-Bad_FPD_map <- add_level(Bad_FPD)
+AllFPD <- add_level(All_FPD)
+SunnyFPD <- add_level(SunnyFPD)
+BadFPD <- add_level(BadFPD)
 ```
 
 ```{r}
-# FPD_map
-# Sunny_FPD_map
-# Bad_FPD_map
+AllFPD2 <- DO %>% group_by(dropoff_hour, DOnbhd) %>%
+  mutate(FPD=sum(totalfare)/sum(totaldist))%>% 
+  select(dropoff_hour, DOnbhd,FPD) %>% unique()
+SunnyFPD2 <- DO %>% filter(do_bad_weather==0)%>%
+  group_by(dropoff_hour, DOnbhd) %>%
+  mutate(FPD=sum(totalfare)/sum(totaldist))%>% 
+  select(dropoff_hour, DOnbhd,FPD) %>% unique()
+
+BadFPD2 <- DO %>% filter(do_bad_weather==1)%>%
+  group_by(dropoff_hour, DOnbhd) %>%
+  mutate(FPD=sum(totalfare)/sum(totaldist))%>% 
+  select(dropoff_hour, DOnbhd,FPD) %>% unique()
 ```
 
 ```{r}
-# AAA <- geo_join(nyc_nbhd, All_FPD, "neighborhood", "PUnbhd")
-# AAA@data
+AllFPD2 <- add_level(AllFPD2)
+SunnyFPD2 <- add_level(SunnyFPD2)
+BadFPD2 <- add_level(BadFPD2)
 ```
 
 ```{r}
-# AAA@data <- na.omit(AAA@data)
-# AAA@data
+AllFPD2
+```
+
+
+```{r}
+Allcount <- PU %>% group_by(PUnbhd,pickup_hour)%>%mutate(totalcount=sum(count)) %>% 
+  select(PUnbhd,pickup_hour,totalcount) %>% unique()
+
+Sunnycount <- PU %>%filter(pu_bad_weather==0) %>% 
+  group_by(PUnbhd,pickup_hour)%>%mutate(totalcount=sum(count))%>% 
+  select(PUnbhd,pickup_hour,totalcount) %>% unique()
+
+Badcount <- PU %>%filter(pu_bad_weather==1) %>%
+  group_by(PUnbhd,pickup_hour)%>%mutate(totalcount=sum(count))%>% 
+  select(PUnbhd,pickup_hour,totalcount) %>% unique()
+
+
+
+Allcount2 <- DO %>% group_by(DOnbhd,dropoff_hour)%>%
+  mutate(totalcount=sum(count))%>% 
+  select(DOnbhd,dropoff_hour,totalcount) %>% unique()
+
+Sunnycount2 <- DO %>%filter(do_bad_weather==0) %>% 
+  group_by(DOnbhd,dropoff_hour)%>%
+  mutate(totalcount=sum(count))%>% 
+  select(DOnbhd,dropoff_hour,totalcount) %>% unique()
+
+Badcount2 <- DO %>%filter(do_bad_weather==1) %>%
+  group_by(DOnbhd,dropoff_hour)%>%mutate(totalcount=sum(count))%>% 
+  select(DOnbhd,dropoff_hour,totalcount) %>% unique()
 ```
 
 ```{r}
-save(FPD_map,file = "../output/FPD_map.RData")
-save(Sunny_FPD_map,file = "../output/Sunny_FPD_map.RData")
-save(Bad_FPD_map,file = "../output/Bad_FPD_map.RData")
+
+```
+
+
+```{r}
+save(Allcount,Sunnycount,Badcount,AllFPD,SunnyFPD,BadFPD,file = "PU_data.RData")
+save(Allcount2,Sunnycount2,Badcount2,AllFPD2,SunnyFPD2,BadFPD2,file = "DO_data.RData")
 ```
 
