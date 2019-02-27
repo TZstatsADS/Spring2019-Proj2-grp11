@@ -24,8 +24,8 @@ library(data.table)
 library(readr)
 
 
-#setwd("~/Desktop/Spr2017-proj2-grp2")
-setwd("../")
+#setwd("Documents/GitHub/Spring2019-Proj2-grp11/")
+#setwd("../")
 
 # set group based on radio selection
 group1 = "<span style='color: #7f0000; font-size: 11pt'><strong>count</strong></span>"
@@ -41,8 +41,6 @@ label = list(label1 = c("<100","100-1000","1000~10,000","10,000~100,000"),
              label2 = c("0-1","2-3","3-4","4-5","5-6","6","7+"),
              label3 = c("<0.4","0.4~0.6",">0.6"))
 title = list(t1 = "Pick Up Numbers", t2 = "Fair Per Distance",t3  = "PercentagePayingCash")
-
-
 
 # load shape data 
 load('output/myShape1.RData')
@@ -68,20 +66,6 @@ rownames(count_result) = subdat@data$NTACode
 
 # summarized data 
 payper = read.csv("data/Data_frame_of_summary.csv")
-
-# THIS IS THE CLUSTERING DATA TRANSFORMATION. Kinda Useless
-# count_result1 <- as.data.frame(count_result[,,1])
-# 
-# sum <- apply(count_result1, 1, sum)
-# as.matrix(count_result1)
-# count_result1 <- count_result1/sum 
-# as.data.frame(count_result1)
-# count_result1[is.na(count_result1)] <- 0
-# 
-# fit <- kmeans(count_result1, 9)
-# aggregate(count_result1,by=list(fit$cluster),FUN=mean)
-# count_result1 <- data.frame(count_result1, fit$cluster)
-
 
 #head(subdat@data)
 shinyServer(function(input, output,session) { 
