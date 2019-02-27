@@ -18,7 +18,6 @@ library(data.table)
 
 
 
-
 ######### Map 1 Data ########
 color.1 = list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
              color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
@@ -279,32 +278,38 @@ shinyServer(function(input, output, session) {
     
     if (input$car == 'Uber'){
       t <- filter(ubercount_byhour_id, groups_byhour==date_time)
-      map.2<-leaflet(t)%>% addTiles() %>%
-        setView(lat=40.75, lng=-73.98, zoom=10)%>%
+      map<-leaflet(t)%>% addTiles() %>%
+        setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
         addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
-                   color = "grey",stroke = TRUE,fillOpacity = 0.5)
-      return (map.2)
+                   color = "gray",stroke = TRUE,fillOpacity = 0.5)
+      return (map)
     }
     
     else if(input$car == 'Taxi'){
       t <- filter(taxicount_byhour_id, groups_byhour==date_time)
-      map.2<-leaflet(t)%>% addTiles() %>%
-        setView(lat=40.75, lng=-73.98, zoom=10)%>%
+      map<-leaflet(t)%>% addTiles() %>%
+        setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
-        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/8)*100,
+        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
                    color = "yellow",stroke = TRUE,fillOpacity = 0.5)
-      return (map.2)
+      return (map)
     }
     
     else {
-      t <- filter(both_byhour_id, groups_byhour==date_time)
-      map.2<-leaflet(t)%>% addTiles() %>%
-        setView(lat=40.75, lng=-73.98, zoom=11)%>%
+      #t <- filter(both_byhour_id, groups_byhour==date_time)
+      t1 <- filter(ubercount_byhour_id, groups_byhour==date_time)
+      t2 <- filter(taxicount_byhour_id, groups_byhour==date_time)
+      map<-leaflet(t)%>% addTiles() %>%
+        setView(-73.86, 40.72, zoom=10)%>%
         addProviderTiles("Stamen.Watercolor") %>%
-        addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
-                   color = "blue",stroke = TRUE,fillOpacity = 0.5)
-      return (map.2)
+        #addCircles(lng=~mean_long,lat=~mean_lat,weight = 5,radius = ~Count_byhour^(1/4)*200,
+        #           color = "blue",stroke = TRUE,fillOpacity = 0.5)
+        addCircles(lng=t1$mean_long,lat=t1$mean_lat,weight = 5,radius = t1$Count_byhour^(1/4)*200,
+                   color = "gray",stroke = TRUE,fillOpacity = 0.5) %>%
+        addCircles(lng=t2$mean_long,lat=t2$mean_lat,weight = 5,radius = t2$Count_byhour^(1/4)*200,
+                   color = "yellow",stroke = TRUE,fillOpacity = 0.5)
+      return (map)
       
     }
     
