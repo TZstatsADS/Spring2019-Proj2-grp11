@@ -27,7 +27,7 @@ load('DO_data.RData')
 setwd("../output")
 load('nyc_nbhd.RData')
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output,session) {
   
   
   
@@ -111,11 +111,61 @@ shinyServer(function(input, output) {
                   title = title[[2]])
     }
     
-    
-    
-
-    
   })
   
+  observeEvent(input$map1_shape_click, {
+    click <- input$map1_shape_click
+    posi <<- reactive({input$map1_shape_click})
+  }
+  )
   
+  observeEvent(input$details,{
+    if(input$details){
+      updateTabsetPanel(session, "map1", selected = "panel4")
+      
+      dattest = data.frame(Longitude = posi()$lng, Latitude = posi()$lat)
+      coordinates(dattest) <- ~ Longitude + Latitude
+      proj4string(dattest) <- proj4string(nyc_nbhd)
+      match1<-over(dattest, nyc_nbhd)
+      match1 <- match1[,c(1,3)]
+      colnames(match1) <- c('nbhd','boro')
+    }
+    
+    output$plot1 <- renderPlot({
+      if (nrow(match1) == 0) {
+        return(NULL)
+      }
+      
+      dfcount_resultSun <- Sunnycount2[Sunnycount2$DOnbhd==match1$nbhd,]
+      dfcount_resultSun$FPD <- unlist(SunnyFPD2[SunnyFPD2$DOnbhd==match1$nbhd,]$FPD)
+      ggplot(data=dfcount_resultSun, aes(x=as.numeric(dropoff_hour), y=totalcount/sum(totalcount),fill=-FPD)) +
+        geom_bar(stat="identity",alpha=0.7)+
+        geom_smooth(col="#F28123") + xlab("Hours") + ylab("Total DropOff Count")+
+        ggtitle("Drop Off Flow Trend in Sunny Days")+ 
+        ylim(0,0.1)
+      # +
+      #   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1)) 
+      
+    })
+    
+    output$plot2 <- renderPlot({
+      if (nrow(match1) == 0) {
+        return(NULL)
+      }
+      
+      dfcount_resultBad <- Badcount2[Badcount2$DOnbhd==match1$nbhd,]
+      dfcount_resultBad$FPD <- unlist(BadFPD2[BadFPD2$DOnbhd==match1$nbhd,]$FPD)
+      ggplot(data=dfcount_resultBad, aes(x=as.numeric(dropoff_hour), y=totalcount/sum(totalcount),fill=-FPD)) +
+        geom_bar(stat="identity",alpha=0.7)+
+        geom_smooth(col="#F28123") + xlab("Hours") + ylab("Total DropOff Count")+
+        ggtitle("Drop Off Flow Trend in Bad Weather Days")+ 
+        ylim(0,0.1)
+      # +
+      #   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1)) 
+      
+    })
+
+ })
+
+
 })

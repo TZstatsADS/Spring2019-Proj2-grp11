@@ -116,6 +116,19 @@ Badcount2 <- DO %>%filter(do_bad_weather==1) %>%
 
 
 ```{r}
+library(ggplot2)
+
+Sunnycount$FPD  = as.factor(unlist(round(SunnyFPD$FPD*5)/5))
+ggplot(Sunnycount[Sunnycount$PUnbhd=='Central Park',], aes(x=as.numeric(pickup_hour),y=totalcount/sum(totalcount),fill=-rank(FPD))) + geom_bar(stat = "identity",alpha=0.8) + geom_smooth(col="#F28123") + scale_y_continuous(labels = scales::percent_format(accuracy = 1)) + ylim(0,0.1)
+```
+
+```{r}
+Sunnycount$FPD  = unlist(SunnyFPD$FPD)
+ggplot(Sunnycount[Sunnycount$PUnbhd=='Central Park',], aes(x=as.numeric(pickup_hour),y=totalcount/sum(totalcount),fill=-FPD)) + geom_bar(stat = "identity",alpha=0.8) + geom_smooth(col="#F28123") + scale_y_continuous(labels = scales::percent_format(accuracy = 0.1))
+```
+
+
+```{r}
 save(Allcount,Sunnycount,Badcount,AllFPD,SunnyFPD,BadFPD,file = "PU_data.RData")
 save(Allcount2,Sunnycount2,Badcount2,AllFPD2,SunnyFPD2,BadFPD2,file = "DO_data.RData")
 ```

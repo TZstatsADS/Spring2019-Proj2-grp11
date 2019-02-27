@@ -1,7 +1,7 @@
 library(ggplot2)
 library(leaflet)
 library(shiny)
-a <- navbarPage("My Application",
+a <- navbarPage("My Application",id='map1',
                 tabPanel("Component 1",
                          
                          div(class="outer",
@@ -21,7 +21,9 @@ a <- navbarPage("My Application",
                                                                    min = 0, max = 23, value = 8, step=1),
                                            
                                            checkboxInput("pickup", "Pick-ups", TRUE),
-                                           checkboxInput("dropoff", "Drop-offs", FALSE)
+                                           checkboxInput("dropoff", "Drop-offs", FALSE),
+                                           
+                                           actionButton("details", "More Details")
                                
 
                              ),
@@ -42,8 +44,20 @@ a <- navbarPage("My Application",
                          ),
                 
                 
-                tabPanel("Component 2"),
+                tabPanel("Component 2",value = 'panel2'
+                         
+                         ),
                 
                 
-                tabPanel("Component 3")
+                tabPanel("Component 3",value = 'panel3'),
+                tabPanel("Component 4", value = "panel4",
+                         column(6,
+                           plotOutput('plot1')
+                         ),
+                         column(6,
+                                plotOutput('plot2')
+                         )
+                         )
 )     
+
+
