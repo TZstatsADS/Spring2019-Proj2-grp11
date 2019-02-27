@@ -64,7 +64,7 @@ The first map shows NYC traffic in normal weather(i.e. sunny) and bad weather(i.
 
 The second map focuses on comparing pickup numbers and locations of NYC taxi and uber by times. From the perspective of location, it's not hard to tell that NYC taxi is much more popular than uber in Manhattan Island, while only a small amount of taxi pickups appeared in Brooklyn and Queens. Besides, larger circle radiuses show larger pickup number. From 2015 to 2016, more customers chose to take Taxi rather than Uber. However, the Uber dataset only covers the first half year of 2015. If there is newer dataset for Uber, we might see a clearer trend of Taxi and Uber growth.
 
-The third map...
+The third map shows airport traffic depending on where and when someone is picked up. This is useful for showing the amount of traffic one might encounter on their trip. 
 
 
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement.
@@ -73,7 +73,7 @@ Panel 1(traffic map):
 
 Panel 2(time flow map): 
 
-Panel 3(airport traffic map):
+Panel 3(airport traffic map): NL queried, cleaned the data and built the tab for the shiny app. Xinyi Hu integrated it into the rest of the app
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
