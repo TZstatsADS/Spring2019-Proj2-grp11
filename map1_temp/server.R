@@ -18,7 +18,7 @@ library(ggpubr)
 
 color = list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
             color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
-            color3 = c("#882E72", "#B178A6", "#D6C1DE", "#7BAFDE", "#4EB265"))
+            color3 = c("#F9E79F", "#C0392B", "#A9CCE3", "#34495E", "#1E8449"))
 label = list(label1 = c("<100","100-1000","1000~10,000","10,000~100,000","100,000~1,000,000","1,000,000~10,000,000"),
              label2 = c("0-1","2-3","3-4","4-5","5-6","6-7","7+"),
              label3 = c("Else","Entertainment","Residential Area","Work Area","Attractions"))
@@ -85,7 +85,7 @@ shinyServer(function(input, output,session) {
     popup2 = paste0('<strong>Neighborhood: </strong><br>', FPD_map_data@data$neighborhood, 
                     '<br><strong>Fair Per Distance: </strong><br>', FPD_map_data@data$FPD)
     
-    palc = colorBin(color[[3]], 1:5)
+    palc = colorFactor(color[[3]], 1:5)
     
     popupc = paste0('<strong>Neighborhood: </strong><br>', cluster_map_data@data$neighborhood, 
                     '<br><strong>Fair Per Distance: </strong><br>', cluster_map_data@data$xx)
@@ -128,7 +128,7 @@ shinyServer(function(input, output,session) {
     else if(input$CF=="Cluster"){
       picC <- leaflet(cluster_map_data) %>%
         addTiles() %>% 
-        addPolygons(fillColor = ~palc(index), popup = popupc, color = 'grey', weight = 1) %>% 
+        addPolygons(fillColor = ~palc(index), popup = popupc, color = 'grey', weight = 1,fillOpacity = .6) %>% 
         addLegend(position = "bottomright",
                   colors = color[[3]],
                   labels = label[[3]],
@@ -166,7 +166,7 @@ shinyServer(function(input, output,session) {
       dfcount_resultSun <- Sunnycount2[Sunnycount2$DOnbhd==match1$nbhd,]
       dfcount_resultSun$FPD <- unlist(SunnyFPD2[SunnyFPD2$DOnbhd==match1$nbhd,]$FPD)
       plot11<- ggplot(data=dfcount_resultSun, aes(x=as.numeric(dropoff_hour), y=totalcount/sum(totalcount),fill=FPD)) +
-        geom_bar(stat="identity",alpha=0.7)+
+        geom_bar(stat="identity",alpha=0.85)+
         geom_smooth(col="#F28123") + xlab("Hours") + ylab("Total DropOff Count")+
         ggtitle("Drop Off Flow Trend in Sunny Days")+ 
         ylim(0,0.1)+ 
@@ -175,7 +175,7 @@ shinyServer(function(input, output,session) {
       dfcount_resultBad <- Badcount2[Badcount2$DOnbhd==match1$nbhd,]
       dfcount_resultBad$FPD <- unlist(BadFPD2[BadFPD2$DOnbhd==match1$nbhd,]$FPD)
       plot22<- ggplot(data=dfcount_resultBad, aes(x=as.numeric(dropoff_hour), y=totalcount/sum(totalcount),fill=FPD)) +
-        geom_bar(stat="identity",alpha=0.7)+
+        geom_bar(stat="identity",alpha=0.85)+
         geom_smooth(col="#F28123") + xlab("Hours") + ylab("Total DropOff Count")+
         ggtitle("Drop Off Flow Trend in Bad Weather Days")+ 
         ylim(0,0.1)+
@@ -187,6 +187,19 @@ shinyServer(function(input, output,session) {
       
       
     })
+    table_1 <- Sunnycount2%>%filter(DOnbhd==match1$nbhd) %>% group_by(DOnbhd) %>%
+      mutate(TotalCount=sum(totalcount),Cluster=tempt$xx[as.character(tempt$nbhd)==match1$nbhd])
+    names(table_1) <- c("Name","Hour","count","TotalCount","Cluster")
+    output$table1 <- renderTable(
+      unique(table_1[,c(1,4,5)])
+      )
+    
+    table_2 <- Badcount2%>%filter(DOnbhd==match1$nbhd) %>% group_by(DOnbhd) %>%
+      mutate(TotalCount=sum(totalcount),Cluster=tempt$xx[as.character(tempt$nbhd)==match1$nbhd])
+    names(table_2) <- c("Name","Hour","count","TotalCount","Cluster")
+    output$table2 <- renderTable(
+      unique(table_2[,c(1,4,5)])
+    )
 
  })
 

@@ -51,13 +51,25 @@ a <- navbarPage("My Application",id='map1',
                 
                 tabPanel("Component 3",value = 'panel3'),
                 tabPanel("Component 4", value = "panel4",
+                         h3(strong("Neighborhood Details"),align = "center"),
+                         br(),
                          column(12,
                            plotOutput('plot1')
-                         )
-                         #,
-                         #column(6,
-                        #        plotOutput('plot2')
-                        # )
+                         ),
+                         
+                        fluidPage(
+                          fluidRow(
+                            br(),
+                            br(),
+                            column(6,
+                                   tableOutput('table1')
+                            ),
+                            
+                            column(6,
+                                   tableOutput('table2')
+                            )
+                          )
+                        )
                          )
 )     
 
