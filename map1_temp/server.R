@@ -11,6 +11,7 @@ library(broom)
 library(httr)
 library(rgdal)
 library(readr)
+library(ggpubr)
 
 
 
@@ -164,30 +165,26 @@ shinyServer(function(input, output,session) {
       
       dfcount_resultSun <- Sunnycount2[Sunnycount2$DOnbhd==match1$nbhd,]
       dfcount_resultSun$FPD <- unlist(SunnyFPD2[SunnyFPD2$DOnbhd==match1$nbhd,]$FPD)
-      ggplot(data=dfcount_resultSun, aes(x=as.numeric(dropoff_hour), y=totalcount/sum(totalcount),fill=-FPD)) +
+      plot11<- ggplot(data=dfcount_resultSun, aes(x=as.numeric(dropoff_hour), y=totalcount/sum(totalcount),fill=FPD)) +
         geom_bar(stat="identity",alpha=0.7)+
         geom_smooth(col="#F28123") + xlab("Hours") + ylab("Total DropOff Count")+
         ggtitle("Drop Off Flow Trend in Sunny Days")+ 
-        ylim(0,0.1)
-      # +
-      #   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1)) 
-      
-    })
-    
-    output$plot2 <- renderPlot({
-      if (nrow(match1) == 0) {
-        return(NULL)
-      }
+        ylim(0,0.1)+ 
+        scale_fill_gradient(low="#56B1F7", high="#132B43") 
       
       dfcount_resultBad <- Badcount2[Badcount2$DOnbhd==match1$nbhd,]
       dfcount_resultBad$FPD <- unlist(BadFPD2[BadFPD2$DOnbhd==match1$nbhd,]$FPD)
-      ggplot(data=dfcount_resultBad, aes(x=as.numeric(dropoff_hour), y=totalcount/sum(totalcount),fill=-FPD)) +
+      plot22<- ggplot(data=dfcount_resultBad, aes(x=as.numeric(dropoff_hour), y=totalcount/sum(totalcount),fill=FPD)) +
         geom_bar(stat="identity",alpha=0.7)+
         geom_smooth(col="#F28123") + xlab("Hours") + ylab("Total DropOff Count")+
         ggtitle("Drop Off Flow Trend in Bad Weather Days")+ 
-        ylim(0,0.1)
-      # +
-      #   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1)) 
+        ylim(0,0.1)+
+        scale_fill_gradient(low="#56B1F7", high="#132B43") 
+      
+      ggarrange(plot11, plot22,
+      common.legend = TRUE, legend = "bottom"
+    )
+      
       
     })
 
